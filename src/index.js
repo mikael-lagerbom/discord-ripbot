@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Discord = require('discord.js');
 
 const knex = require('./knex');
@@ -10,7 +11,6 @@ const token = process.env.DISCORD_TOKEN;
 
 const start = async () => {
   await utils.migrateLatest(knex);
-  console.log('mirations ran');
 };
 
 start();

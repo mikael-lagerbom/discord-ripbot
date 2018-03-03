@@ -14,7 +14,10 @@ exports.up = async (knex, Promise) => {
 
   await knex.schema.createTable('rips', table => {
     table.increments('id').notNullable();
-    table.text('rip').notNullable();
+    table
+      .text('rip')
+      .notNullable()
+      .unique();
     table.integer('user').unsigned();
     table.foreign('user').references('users.id');
     table.integer('channel').unsigned();
@@ -23,7 +26,10 @@ exports.up = async (knex, Promise) => {
 
   await knex.schema.createTable('wisdoms', table => {
     table.increments('id').notNullable();
-    table.text('wisdom').notNullable();
+    table
+      .text('wisdom')
+      .notNullable()
+      .unique();
   });
 };
 

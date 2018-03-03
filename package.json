@@ -17,30 +17,24 @@
     "eslint-plugin-import": "2.9.0",
     "husky": "0.14.3",
     "lint-staged": "7.0.0",
-    "nodemon": "1.17.1",
     "prettier": "1.11.1",
     "prettierrc": "0.0.0-5"
   },
   "dependencies": {
-    "axios": "0.18.0",
     "discord.js": "11.3.0",
+    "dotenv": "5.0.1",
     "knex": "0.14.4",
-    "pg": "7.4.1",
-    "utf8": "3.0.0",
-    "wikijs": "4.5.2"
+    "nodemon": "1.17.1",
+    "pg": "7.4.1"
   },
   "scripts": {
     "precommit": "lint-staged",
     "eslint": "eslint --ignore-path .gitignore --ext js .",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon --watch ./src -e js --exec node src/index.js"
   },
   "lint-staged": {
     "linters": {
-      "src/**/*.js": [
-        "prettier --write",
-        "eslint",
-        "git add"
-      ]
+      "src/**/*.js": ["prettier --write", "eslint", "git add"]
     }
   }
 }

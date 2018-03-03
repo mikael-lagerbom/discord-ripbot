@@ -1,0 +1,30 @@
+# Compose file for local dev, not for prod
+
+version: '2'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [npm, run, dev]
+    ports:
+      - "9000:80"
+    volumes:
+      - ./src:/app/src
+    links:
+      - database
+
+  database:
+    image: postgres:9.6.3-alpine
+    environment:
+      - POSTGRES_DB=ripbot
+      - POSTGRES_USER=ripbot
+      - POSTGRES_PASSWORD=ripbot
+    ports:
+      - "4432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:
+    driver: local
