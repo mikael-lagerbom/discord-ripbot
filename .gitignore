@@ -57,3 +57,14 @@ typings/
 # dotenv environment variables file
 .env
 
+# build folder
+dist
+
+# build zip-file
+*.zip
+
+# serverless deploy folder
+.serverless
+
+# json with example messages for development
+example.json

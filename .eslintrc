@@ -1,0 +1,31 @@
+{
+    "plugins": ["import"],
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "arrow-parens": ["warn", "as-needed"],
+      "comma-dangle": ["warn", "never"],
+      "import/newline-after-import": "warn",
+      "import/first": "off",
+      "import/order": [
+        "error",
+        {
+          "newlines-between": "always"
+        }
+      ],
+      "func-names": "off",
+      "max-len": ["warn", 140],
+      "no-confusing-arrow": ["error", { "allowParens": true }],
+      "space-before-function-paren": "off"
+    },
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "modules": true,
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "extends": ["prettier"]
+  }
