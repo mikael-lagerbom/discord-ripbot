@@ -18,7 +18,7 @@ exports.up = async (knex, Promise) => {
     table.integer('user').unsigned();
     table.foreign('user').references('users.id');
     table.integer('channel').unsigned();
-    table.foreign('channel').references('channel.id');
+    table.foreign('channel').references('channels.id');
   });
 
   await knex.schema.createTable('wisdoms', table => {
