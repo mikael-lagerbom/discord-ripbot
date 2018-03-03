@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
 
+const utils = require('./modules/utils');
+const wisdoms = require('./modules/wisdom');
+
 const client = new Discord.Client();
 
 const token = process.env.DISCORD_TOKEN;
@@ -9,7 +12,8 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-  if (message.content === 'ping') {
+  const messageWords = message.content.split('((\b[^s]+\b)((?<=.w).)?)');
+  if (utils.isInArray(messageWords, 'ping')) {
     message.channel.send('pong');
   }
 });
