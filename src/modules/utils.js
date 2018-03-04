@@ -23,9 +23,9 @@ const isInArray = (array, string) => {
 
 const handleMessage = async message => {
   // Words with separators, for commands
-  const messageContent = message.content.split(' ');
+  const messageContent = message.content.toLowerCase().split(' ');
   // Words without separators, for triggers
-  const messageWords = voca.words(message.content);
+  const messageWords = voca.words(message.content.toLowerCase());
   if (messageContent[0] === '!addrip') {
     rips.addRip(message);
   } else if (messageContent[0] === '!delrip') {
