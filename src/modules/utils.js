@@ -1,5 +1,7 @@
 const path = require('path');
 
+const voca = require('voca');
+
 const rips = require('./rips');
 const wisdoms = require('./wisdoms');
 
@@ -20,15 +22,21 @@ const isInArray = (array, string) => {
 };
 
 const handleMessage = async message => {
-  const messageWords = message.content.split(' ');
-  if (isInArray(messageWords, 'viisaus')) {
+  // Words with separators, for commands
+  const messageContent = message.content.split(' ');
+  // Words without separators, for triggers
+  const messageWords = voca.words(message.content);
+  if (messageContent[0] === '!addrip') {
+    rips.addRip(message);
+  } else if (messageContent[0] === '!delrip') {
+    rips.delRip(message);
+  } else if (isInArray(messageWords, 'viisaus')) {
     const wisdom = await wisdoms.getWisdom();
     message.channel.send(wisdom);
-  }
-  if (isInArray(messageWords, 'rip')) {
+  } else if (isInArray(messageWords, 'rip')) {
     const rip = await rips.getRip();
     message.channel.send(`rip in ${rip}`);
   }
 };
 
-module.exports = { migrateLatest, runSeeds, isInArray, handleMessage };
+module.exports = { migrateLatest, runSeeds, handleMessage };

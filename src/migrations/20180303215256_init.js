@@ -1,14 +1,14 @@
 exports.up = async (knex, Promise) => {
   await knex.schema.createTable('users', table => {
     table.increments('id').notNullable();
-    table.integer('discord_id').notNullable();
+    table.text('discord_id').notNullable();
     table.text('username').notNullable();
-    table.integer('discriminator').notNullable();
+    table.text('discriminator').notNullable();
   });
 
-  await knex.schema.createTable('channels', table => {
+  await knex.schema.createTable('guilds', table => {
     table.increments('id').notNullable();
-    table.integer('discord_id').notNullable();
+    table.text('discord_id').notNullable();
     table.text('name').notNullable();
   });
 
@@ -20,8 +20,8 @@ exports.up = async (knex, Promise) => {
       .unique();
     table.integer('user').unsigned();
     table.foreign('user').references('users.id');
-    table.integer('channel').unsigned();
-    table.foreign('channel').references('channels.id');
+    table.integer('guild').unsigned();
+    table.foreign('guild').references('guilds.id');
   });
 
   await knex.schema.createTable('wisdoms', table => {

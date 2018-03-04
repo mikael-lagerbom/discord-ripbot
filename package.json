@@ -25,7 +25,8 @@
     "dotenv": "5.0.1",
     "knex": "0.14.4",
     "nodemon": "1.17.1",
-    "pg": "7.4.1"
+    "pg": "7.4.1",
+    "voca": "1.4.0"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -34,7 +35,11 @@
   },
   "lint-staged": {
     "linters": {
-      "./src/**/*.js": ["prettier --write", "eslint", "git add"]
+      "./src/**/*.js": [
+        "prettier --write",
+        "eslint",
+        "git add"
+      ]
     }
   }
 }
