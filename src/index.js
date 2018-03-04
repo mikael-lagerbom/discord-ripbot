@@ -3,7 +3,8 @@ const Discord = require('discord.js');
 
 const knex = require('./knex');
 const utils = require('./modules/utils');
-const wisdoms = require('./modules/wisdom');
+const rips = require('./modules/rips');
+const wisdoms = require('./modules/wisdoms');
 
 const client = new Discord.Client();
 
@@ -12,7 +13,6 @@ const token = process.env.DISCORD_TOKEN;
 const start = async () => {
   utils.migrateLatest(knex).then(async () => {
     const wisdoms = await knex('wisdoms').select('id');
-    // Only seed if DB is empty
     if (wisdoms.length === 0) {
       return utils.runSeeds(knex);
     }
@@ -26,13 +26,16 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-  const messageWords = message.content.split(' ');
-  if (utils.isInArray(messageWords, 'viisaus')) {
-    const wisdom = await knex('wisdoms')
-      .pluck('wisdom')
-      .orderByRaw('random()')
-      .limit(1);
-    message.channel.send(wisdom);
+  if (!message.author.bot) {
+    const messageWords = message.content.split(' ');
+    if (utils.isInArray(messageWords, 'viisaus')) {
+      const wisdom = await wisdoms.getWisdom();
+      message.channel.send(wisdom);
+    }
+    if (utils.isInArray(messageWords, 'rip')) {
+      const rip = await rips.getRip();
+      message.channel.send(`rip in ${rip}`);
+    }
   }
 });
 
