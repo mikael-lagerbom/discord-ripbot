@@ -34,7 +34,7 @@ const handleMessage = async message => {
     const wisdom = await wisdoms.getWisdom();
     message.channel.send(wisdom);
   } else if (isInArray(messageWords, 'rip')) {
-    const rip = await rips.getRip(message.channel.guild.id);
+    const rip = await rips.getRip(message.channel.guild);
     message.channel.send(`rip in ${rip}`);
   }
 };

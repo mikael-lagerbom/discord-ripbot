@@ -6,9 +6,10 @@ const guilds = require('./guilds');
 const users = require('./users');
 
 const getRip = async guild => {
+  const guildId = await guilds.getGuildId(guild);
   return knex('rips')
     .pluck('rip')
-    .where('guild', guild)
+    .where('guild', guildId)
     .orderByRaw('random()')
     .limit(1);
 };
@@ -25,6 +26,7 @@ const parseRipText = message => voca.splice(message, 0, 8);
 const addRip = async message => {
   const ripText = parseRipText(message.content);
   const guildId = await guilds.getGuildId(message.channel.guild);
+
   const [ripExists] = await getSpecificRip(ripText, guildId);
 
   if (!ripExists) {
@@ -47,6 +49,7 @@ const addRip = async message => {
 const delRip = async message => {
   const ripText = parseRipText(message.content);
   const guildId = await guilds.getGuildId(message.channel.guild);
+
   const [ripExists] = await getSpecificRip(ripText, guildId);
 
   if (ripExists) {
