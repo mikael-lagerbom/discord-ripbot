@@ -10,7 +10,13 @@ const client = new Discord.Client();
 const token = process.env.DISCORD_TOKEN;
 
 const start = async () => {
-  await utils.migrateLatest(knex);
+  utils.migrateLatest(knex).then(async () => {
+    const wisdoms = await knex('wisdoms').select('id');
+    // Only seed if DB is empty
+    if (wisdoms.length === 0) {
+      return utils.runSeeds(knex);
+    }
+  });
 };
 
 start();

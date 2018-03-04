@@ -5,9 +5,15 @@ const isInArray = (array, string) => {
 };
 
 const migrateLatest = knex => {
-  knex.migrate.latest({
+  return knex.migrate.latest({
     directory: path.resolve(__dirname, '../migrations')
   });
 };
 
-module.exports = { isInArray, migrateLatest };
+const runSeeds = knex => {
+  return knex.seed.run({
+    directory: path.resolve(__dirname, '../seeds')
+  });
+};
+
+module.exports = { isInArray, migrateLatest, runSeeds };
