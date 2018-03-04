@@ -26,11 +26,13 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-  console.log(message.author);
-  console.log(message.channel);
   const messageWords = message.content.split(' ');
-  if (utils.isInArray(messageWords, 'ping')) {
-    message.channel.send('pong');
+  if (utils.isInArray(messageWords, 'viisaus')) {
+    const wisdom = await knex('wisdoms')
+      .pluck('wisdom')
+      .orderByRaw('random()')
+      .limit(1);
+    message.channel.send(wisdom);
   }
 });
 
