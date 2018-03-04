@@ -14,10 +14,7 @@ exports.up = async (knex, Promise) => {
 
   await knex.schema.createTable('rips', table => {
     table.increments('id').notNullable();
-    table
-      .text('rip')
-      .notNullable()
-      .unique();
+    table.text('rip').notNullable();
     table.integer('user').unsigned();
     table.foreign('user').references('users.id');
     table.integer('guild').unsigned();

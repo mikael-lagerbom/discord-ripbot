@@ -13,6 +13,7 @@ const getUserId = async author => {
         discriminator: author.discriminator
       })
       .returning('id');
+
     return userId;
   }
   return userId;

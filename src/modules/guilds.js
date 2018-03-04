@@ -12,6 +12,7 @@ const getGuildId = async guild => {
         name: guild.name
       })
       .returning('id');
+
     return guildId;
   }
   return guildId;

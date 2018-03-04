@@ -5,44 +5,57 @@ const knex = require('../knex');
 const guilds = require('./guilds');
 const users = require('./users');
 
-const getRip = async () =>
-  knex('rips')
+const getRip = async guild => {
+  return knex('rips')
     .pluck('rip')
+    .where('guild', guild)
     .orderByRaw('random()')
     .limit(1);
+};
 
-const getSpecificRip = async rip =>
-  knex('rips')
-    .pluck('id')
-    .where('rip', rip);
+const getSpecificRip = async (rip, guild) => {
+  return knex('rips')
+    .select('id', 'rip')
+    .where('rip', rip)
+    .andWhere('guild', guild);
+};
 
 const parseRipText = message => voca.splice(message, 0, 8);
 
 const addRip = async message => {
   const ripText = parseRipText(message.content);
-  const [ripExists] = await getSpecificRip(ripText);
+  const guildId = await guilds.getGuildId(message.channel.guild);
+  const [ripExists] = await getSpecificRip(ripText, guildId);
+
   if (!ripExists) {
     const authorId = await users.getUserId(message.author);
-    const guildId = await guilds.getGuildId(message.channel.guild);
-    await knex('rips').insert({
-      rip: ripText,
-      user: authorId,
-      guild: guildId
-    });
-    message.channel.send(`"${ripText}" lisätty rippien listaan`);
+
+    const rip = await knex('rips')
+      .insert({
+        rip: ripText,
+        user: authorId,
+        guild: guildId
+      })
+      .returning('rip');
+
+    message.channel.send(`"${rip}" lisätty rippien listaan`);
   } else {
-    message.channel.send(`"${ripText}" on jo listassa`);
+    message.channel.send(`"${ripExists.rip}" on jo listassa`);
   }
 };
 
 const delRip = async message => {
   const ripText = parseRipText(message.content);
-  const [ripExists] = await getSpecificRip(ripText);
+  const guildId = await guilds.getGuildId(message.channel.guild);
+  const [ripExists] = await getSpecificRip(ripText, guildId);
+
   if (ripExists) {
-    await knex('rips')
+    const rip = await knex('rips')
       .del()
-      .where('rip', ripText);
-    message.channel.send(`"${ripText}" poistettu rippien listasta`);
+      .where('id', ripExists.id)
+      .returning('rip');
+
+    message.channel.send(`"${rip}" poistettu rippien listasta`);
   } else {
     message.channel.send(`"${ripText}" ei ole rippien listassa`);
   }
