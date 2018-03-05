@@ -5,13 +5,14 @@ const knex = require('../knex');
 const guilds = require('./guilds');
 const users = require('./users');
 
-const getRip = async guild => {
-  const guildId = await guilds.getGuildId(guild);
-  return knex('rips')
+const getRip = async message => {
+  const guildId = await guilds.getGuildId(message.channel.guild);
+  const rip = await knex('rips')
     .pluck('rip')
     .where('guild', guildId)
     .orderByRaw('random()')
     .limit(1);
+  message.channel.send(`rip in ${rip}`);
 };
 
 const getSpecificRip = async (rip, guild) => {

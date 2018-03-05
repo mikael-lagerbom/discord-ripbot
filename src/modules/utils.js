@@ -2,6 +2,7 @@ const path = require('path');
 
 const voca = require('voca');
 
+const catfacts = require('./catfacts');
 const rips = require('./rips');
 const wisdoms = require('./wisdoms');
 
@@ -30,12 +31,16 @@ const handleMessage = async message => {
     rips.addRip(message);
   } else if (messageContent[0] === '!delrip') {
     rips.delRip(message);
-  } else if (isInArray(messageWords, 'viisaus')) {
-    const wisdom = await wisdoms.getWisdom();
-    message.channel.send(wisdom);
-  } else if (isInArray(messageWords, 'rip')) {
-    const rip = await rips.getRip(message.channel.guild);
-    message.channel.send(`rip in ${rip}`);
+  } else {
+    if (isInArray(messageWords, 'viisaus')) {
+      wisdoms.getWisdom(message);
+    }
+    if (isInArray(messageWords, 'rip')) {
+      rips.getRip(message);
+    }
+    if (isInArray(messageWords, 'kissefakta')) {
+      catfacts.getCatfact(message);
+    }
   }
 };
 
