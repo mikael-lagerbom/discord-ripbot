@@ -25,24 +25,28 @@ const parseRipText = message => voca.splice(message, 0, 8);
 
 const addRip = async message => {
   const ripText = parseRipText(message.content);
-  const guildId = await guilds.getGuildId(message.channel.guild);
+  if (ripText.length > 50) message.channel.send('rip on liian pitkä');
+  else if (ripText.indexOf('@') > -1) message.channel.send('älä oo perseestä');
+  else {
+    const guildId = await guilds.getGuildId(message.channel.guild);
 
-  const [ripExists] = await getSpecificRip(ripText, guildId);
+    const [ripExists] = await getSpecificRip(ripText, guildId);
 
-  if (!ripExists) {
-    const authorId = await users.getUserId(message.author);
+    if (!ripExists) {
+      const authorId = await users.getUserId(message.author);
 
-    const rip = await knex('rips')
-      .insert({
-        rip: ripText,
-        user: authorId,
-        guild: guildId
-      })
-      .returning('rip');
+      const rip = await knex('rips')
+        .insert({
+          rip: ripText,
+          user: authorId,
+          guild: guildId
+        })
+        .returning('rip');
 
-    message.channel.send(`"${rip}" lisätty rippien listaan`);
-  } else {
-    message.channel.send(`"${ripExists.rip}" on jo listassa`);
+      message.channel.send(`"${rip}" lisätty rippien listaan`);
+    } else {
+      message.channel.send(`"${ripExists.rip}" on jo listassa`);
+    }
   }
 };
 

@@ -39,4 +39,4 @@ const handleMessage = async message => {
   }
 };
 
-module.exports = { migrateLatest, runSeeds, handleMessage };
+module.exports = { migrateLatest, runSeeds, isInArray, handleMessage };
