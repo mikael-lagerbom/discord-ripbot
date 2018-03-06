@@ -44,7 +44,7 @@ const addRip = async message => {
         })
         .returning('rip');
 
-      message.channel.send(`"${rip}" lisätty rippien listaan`);
+      message.react('✅');
     } else {
       message.channel.send(`"${ripExists.rip}" on jo listassa`);
     }
