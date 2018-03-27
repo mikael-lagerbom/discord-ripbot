@@ -63,7 +63,7 @@ const delRip = async message => {
       .where('id', ripExists.id)
       .returning('rip');
 
-    message.channel.send(`"${rip}" poistettu rippien listasta`);
+    message.react('✅');
   } else {
     message.channel.send(`"${ripText}" ei ole rippien listassa`);
   }
