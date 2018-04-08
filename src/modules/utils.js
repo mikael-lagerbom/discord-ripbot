@@ -3,7 +3,9 @@ const path = require('path');
 const voca = require('voca');
 
 const catfacts = require('./catfacts');
+const decide = require('./decide');
 const rips = require('./rips');
+const roll = require('./roll');
 const wisdoms = require('./wisdoms');
 
 const migrateLatest = knex => {
@@ -39,6 +41,10 @@ const handleMessage = async message => {
     rips.addRip(message);
   } else if (messageContent[0] === '!delrip') {
     rips.delRip(message);
+  } else if (messageContent[0] === '!decide') {
+    decide.decide(message, messageWords);
+  } else if (messageContent[0] === '!roll') {
+    roll.roll(message, messageWords);
   } else {
     if (isInArray(messageWords, 'viisaus')) {
       wisdoms.getWisdom(message);
