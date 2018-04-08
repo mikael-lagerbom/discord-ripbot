@@ -25,7 +25,12 @@ client.on('ready', () => {
 
 client.on('message', message => {
   if (!message.author.bot) {
-    utils.handleMessage(message);
+    if (utils.computerSaysNo()) {
+      const username = message.author.username;
+      message.channel.send(`${username} pls`);
+    } else {
+      utils.handleMessage(message);
+    }
   }
 });
 

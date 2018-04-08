@@ -22,6 +22,14 @@ const isInArray = (array, string) => {
   return array.indexOf(string.toLowerCase()) > -1;
 };
 
+const computerSaysNo = message => {
+  // adjust for fewer applications
+  const maxRand = 50;
+  const plsTrigger = 25;
+  const randInt = Math.floor(Math.random() * Math.floor(maxRand));
+  return randInt === plsTrigger;
+};
+
 const handleMessage = async message => {
   // Words with separators, for commands
   const messageContent = message.content.toLowerCase().split(' ');
@@ -44,4 +52,4 @@ const handleMessage = async message => {
   }
 };
 
-module.exports = { migrateLatest, runSeeds, isInArray, handleMessage };
+module.exports = { migrateLatest, runSeeds, isInArray, computerSaysNo, handleMessage };
