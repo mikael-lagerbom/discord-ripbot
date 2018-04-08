@@ -42,7 +42,7 @@ const handleMessage = async message => {
   } else if (messageContent[0] === '!delrip') {
     rips.delRip(message);
   } else if (messageContent[0] === '!decide') {
-    decide.decide(message, messageWords);
+    decide.decide(message, voca.words(message.content));
   } else if (messageContent[0] === '!roll') {
     roll.roll(message, messageWords);
   } else {
