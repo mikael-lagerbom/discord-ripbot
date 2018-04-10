@@ -1,5 +1,4 @@
-const decide = (message) => {
-
+const decide = message => {
   // removes the command from possible choices
   const givenOptions = message.content.replace('!decide ', '').split(',');
 

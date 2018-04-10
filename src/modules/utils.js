@@ -1,5 +1,6 @@
 const path = require('path');
 
+const MersenneTwister = require('mersenne-twister');
 const voca = require('voca');
 
 const catfacts = require('./catfacts');
@@ -7,6 +8,9 @@ const decide = require('./decide');
 const rips = require('./rips');
 const roll = require('./roll');
 const wisdoms = require('./wisdoms');
+
+const seed = Date.now();
+const generator = new MersenneTwister(seed);
 
 const migrateLatest = knex => {
   return knex.migrate.latest({
@@ -27,8 +31,8 @@ const isInArray = (array, string) => {
 const computerSaysNo = () => {
   // adjust for fewer applications
   const maxRand = 100;
-  const plsTrigger = 50;
-  const randInt = Math.floor(Math.random() * Math.floor(maxRand));
+  const plsTrigger = Math.floor(maxRand / 2);
+  const randInt = Math.floor(generator.random_incl() * Math.floor(maxRand));
   return randInt === plsTrigger;
 };
 
@@ -44,7 +48,7 @@ const handleMessage = async message => {
   } else if (messageContent[0] === '!decide') {
     decide.decide(message);
   } else if (messageContent[0] === '!roll') {
-    roll.roll(message, messageWords);
+    roll.roll(message, messageWords, generator);
   } else {
     if (isInArray(messageWords, 'viisaus')) {
       wisdoms.getWisdom(message);
