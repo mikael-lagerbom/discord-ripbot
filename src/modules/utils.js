@@ -24,10 +24,10 @@ const isInArray = (array, string) => {
   return array.indexOf(string.toLowerCase()) > -1;
 };
 
-const computerSaysNo = message => {
+const computerSaysNo = () => {
   // adjust for fewer applications
-  const maxRand = 50;
-  const plsTrigger = 25;
+  const maxRand = 100;
+  const plsTrigger = 50;
   const randInt = Math.floor(Math.random() * Math.floor(maxRand));
   return randInt === plsTrigger;
 };
@@ -42,7 +42,7 @@ const handleMessage = async message => {
   } else if (messageContent[0] === '!delrip') {
     rips.delRip(message);
   } else if (messageContent[0] === '!decide') {
-    decide.decide(message, voca.words(message.content));
+    decide.decide(message);
   } else if (messageContent[0] === '!roll') {
     roll.roll(message, messageWords);
   } else {
