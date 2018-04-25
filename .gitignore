@@ -68,3 +68,6 @@ dist
 
 # json with example messages for development
 example.json
+
+# MacOS things
+.DS_Store

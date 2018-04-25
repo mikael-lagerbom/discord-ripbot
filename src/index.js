@@ -11,7 +11,8 @@ const token = process.env.DISCORD_TOKEN;
 const start = async () => {
   utils.migrateLatest(knex).then(async () => {
     const wisdoms = await knex('wisdoms').select('id');
-    if (wisdoms.length === 0) {
+    const ismoQuotes = await knex('ismo_quotes').select('id');
+    if (wisdoms.length === 0 || ismoQuotes.length === 0) {
       return utils.runSeeds(knex);
     }
   });

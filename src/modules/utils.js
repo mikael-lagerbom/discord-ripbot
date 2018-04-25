@@ -5,6 +5,7 @@ const voca = require('voca');
 
 const catfacts = require('./catfacts');
 const decide = require('./decide');
+const ismo = require('./ismo_quotes');
 const rips = require('./rips');
 const roll = require('./roll');
 const wisdoms = require('./wisdoms');
@@ -49,6 +50,8 @@ const handleMessage = async message => {
     decide.decide(message);
   } else if (messageContent[0] === '!roll') {
     roll.roll(message, messageWords, generator);
+  } else if (messageContent[0] === '!ismo') {
+    ismo.getQuote(message);
   } else {
     if (isInArray(messageWords, 'viisaus')) {
       wisdoms.getWisdom(message);
