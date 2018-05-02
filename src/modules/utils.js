@@ -42,26 +42,32 @@ const handleMessage = async message => {
   const messageContent = message.content.toLowerCase().split(' ');
   // Words without separators, for triggers
   const messageWords = voca.words(message.content.toLowerCase());
-  if (messageContent[0] === '!addrip') {
-    rips.addRip(message);
-  } else if (messageContent[0] === '!delrip') {
-    rips.delRip(message);
-  } else if (messageContent[0] === '!decide') {
-    decide.decide(message);
-  } else if (messageContent[0] === '!roll') {
-    roll.roll(message, messageWords, generator);
-  } else if (messageContent[0] === '!ismo') {
-    ismo.getQuote(message);
-  } else {
-    if (isInArray(messageWords, 'viisaus')) {
+  switch (messageContent[0]) {
+    case '!addrip':
+      rips.addRip(message);
+      break;
+    case '!delrip':
+      rips.delRip(message);
+      break;
+    case '!decide':
+      decide.decide(message);
+      break;
+    case '!roll!':
+      roll.roll(message, messageWords, generator);
+      break;
+    case '!ismo':
+      ismo.getQuote(message);
+      break;
+    case '!viisaus':
       wisdoms.getWisdom(message);
-    }
-    if (isInArray(messageWords, 'rip')) {
-      rips.getRip(message);
-    }
-    if (isInArray(messageWords, 'kissefakta')) {
+      break;
+    case '!kissefakta':
       catfacts.getCatfact(message);
-    }
+      break;
+    default:
+      if (isInArray(messageWords, 'rip')) {
+        rips.getRip(message);
+      }
   }
 };
 
