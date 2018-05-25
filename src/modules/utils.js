@@ -8,6 +8,7 @@ const decide = require('./decide');
 const ismo = require('./ismo_quotes');
 const rips = require('./rips');
 const roll = require('./roll');
+const slap = require('./slap');
 const wisdoms = require('./wisdoms');
 
 const seed = Date.now();
@@ -64,6 +65,8 @@ const handleMessage = async message => {
     case '!kissefakta':
       catfacts.getCatfact(message);
       break;
+    case '!slap':
+      slap.slap(message);
     default:
       if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
