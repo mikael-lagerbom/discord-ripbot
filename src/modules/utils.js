@@ -67,6 +67,8 @@ const handleMessage = async message => {
       break;
     case '!slap':
       slap.slap(message);
+    case '!rips':
+      rips.ripCount(message);
     default:
       if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
