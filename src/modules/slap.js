@@ -17,8 +17,12 @@ const slap = async message => {
     const mentions = message.mentions.users;
     const slappee = mentions.first();
 
-    if (slappee) {
-      const slappeeDatabaseId = await users.getUserId({ slappee });
+    if (slappee && slappee.id) {
+      const slappeeDatabaseId = await users.getUserId({
+        id: slappee.id,
+        username: slappee.username,
+        discriminator: slappee.discriminator
+      });
 
       const slap = await knex('slaps')
         .insert({
