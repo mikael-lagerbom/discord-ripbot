@@ -5,6 +5,7 @@ const voca = require('voca');
 
 const catfacts = require('./catfacts');
 const decide = require('./decide');
+const frustrations = require('./frustrations');
 const ismo = require('./ismo_quotes');
 const rips = require('./rips');
 const roll = require('./roll');
@@ -67,8 +68,16 @@ const handleMessage = async message => {
       break;
     case '!slap':
       slap.slap(message);
+      break;
     case '!rips':
       rips.ripCount(message);
+      break;
+    case '!vituttaa':
+      frustrations.getFrustration(message, 'vituttaa');
+      break;
+    case '!tunteisiin':
+      frustrations.getFrustration(message, 'menee tunteisiin');
+      break;
     default:
       if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
