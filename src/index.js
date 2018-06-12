@@ -25,7 +25,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-  if (!message.author.bot) {
+  if (!message.author.bot || message.content === 'rip in rip') {
     if (utils.computerSaysNo()) {
       const username = message.author.username;
       message.channel.send(`${username} pls`);

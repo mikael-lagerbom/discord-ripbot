@@ -7,6 +7,7 @@ const catfacts = require('./catfacts');
 const decide = require('./decide');
 const frustrations = require('./frustrations');
 const ismo = require('./ismo_quotes');
+const requests = require('./requests');
 const rips = require('./rips');
 const roll = require('./roll');
 const slap = require('./slap');
@@ -77,6 +78,9 @@ const handleMessage = async message => {
       break;
     case '!tunteisiin':
       frustrations.getFrustration(message, 'menee tunteisiin');
+      break;
+    case '!toive':
+      requests.sendFeatureRequest(message);
       break;
     default:
       if (isInArray(messageWords, 'rip')) {
