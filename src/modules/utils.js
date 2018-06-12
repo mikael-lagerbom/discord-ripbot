@@ -82,6 +82,12 @@ const handleMessage = async message => {
     case '!toive':
       requests.sendFeatureRequest(message);
       break;
+    case '!heimotaistelu':
+      requests.sendFeatureRequest(message);
+      break;
+    case '!ruoka':
+      requests.sendFeatureRequest(message);
+      break;
     default:
       if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
