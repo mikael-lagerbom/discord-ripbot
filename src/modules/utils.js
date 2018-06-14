@@ -5,6 +5,7 @@ const voca = require('voca');
 
 const catfacts = require('./catfacts');
 const decide = require('./decide');
+const explanations = require('./explain');
 const frustrations = require('./frustrations');
 const ismo = require('./ismo_quotes');
 const requests = require('./requests');
@@ -88,8 +89,16 @@ const handleMessage = async message => {
     case '!ruoka':
       requests.sendFeatureRequest(message);
       break;
+    case '!opi':
+      explanations.addExplanation(message);
+      break;
+    case '!unohda':
+      explanations.delExplanation(message);
+      break;
     default:
-      if (isInArray(messageWords, 'rip')) {
+      if (message.content[0] === '?') {
+        explanations.getExplanation(message, messageWords);
+      } else if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
       }
   }
