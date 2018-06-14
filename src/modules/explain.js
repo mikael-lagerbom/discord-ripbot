@@ -19,9 +19,8 @@ const getExplanation = async message => {
   } else {
     const value = await knex('explanations')
       .pluck('explanation')
-      .where('guild', guildId)
-      .andWhereRaw('LOWER(key) LIKE ?', '%' + key.toLowerCase() + '%');
-    message.channel.send(`${key}: ${value}`);
+      .where('id', keyExists.id);
+    message.channel.send(`${keyExists.key}: ${value}`);
   }
 };
 
