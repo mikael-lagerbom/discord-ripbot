@@ -41,7 +41,7 @@ const parseValue = message =>
 const addExplanation = async message => {
   const key = parseKey(message);
   const value = parseValue(message);
-  if (value.length > 100) message.channel.send('selitys on liian pitkä');
+  if (value.length > 200) message.channel.send('selitys on liian pitkä');
   else if (key.length > 100) message.channel.send('termi on liian pitkä');
   else if (message.content.indexOf('@') > -1) message.channel.send('älä oo perseestä');
   else {
