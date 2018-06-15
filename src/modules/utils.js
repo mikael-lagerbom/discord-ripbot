@@ -96,7 +96,7 @@ const handleMessage = async message => {
       explanations.delExplanation(message);
       break;
     default:
-      if (message.content[0] === '?') {
+      if (message.content[0] === '?' && message.content.length > 1) {
         explanations.getExplanation(message, messageWords);
       } else if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
