@@ -49,11 +49,13 @@ const addExplanation = async message => {
     const authorId = await users.getUserId(message.author);
 
     const [keyExists] = await getKey(key, guildId);
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urlifiedValue = value.replace(urlRegex, url => '<' + url + '>');
 
     if (!keyExists) {
       await knex('explanations').insert({
         key,
-        explanation: value,
+        explanation: urlifiedValue,
         user: authorId,
         guild: guildId
       });
