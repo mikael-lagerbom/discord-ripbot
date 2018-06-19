@@ -1,3 +1,4 @@
+const Discord = require('discord.js');
 const voca = require('voca');
 
 const knex = require('../knex');
@@ -17,10 +18,15 @@ const getExplanation = async message => {
   if (!keyExists) {
     message.channel.send(`en tiedä mitä ${key} tarkoittaa`);
   } else {
-    const value = await knex('explanations')
-      .pluck('explanation')
+    const [explanation] = await knex('explanations')
+      .select('explanation', 'type')
       .where('id', keyExists.id);
-    message.channel.send(`${keyExists.key}: ${value}`);
+    if (explanation.type === 'image') {
+      const explanationAttachment = new Discord.Attachment(explanation.explanation);
+      message.channel.send(`${keyExists.key}:`, explanationAttachment);
+    } else {
+      message.channel.send(`${keyExists.key}: ${explanation.explanation}`);
+    }
   }
 };
 
@@ -40,32 +46,46 @@ const parseValue = message =>
 
 const addExplanation = async message => {
   const key = parseKey(message);
-  const value = parseValue(message);
+  let value = parseValue(message);
   if (value.length > 200) message.channel.send('selitys on liian pitkä');
   else if (key.length > 100) message.channel.send('termi on liian pitkä');
   else if (message.content.indexOf('@') > -1) message.channel.send('älä oo perseestä');
   else {
     const guildId = await guilds.getGuildId(message.channel.guild);
     const authorId = await users.getUserId(message.author);
-
     const [keyExists] = await getKey(key, guildId);
+
+    const attachmentUrl = message.attachments ? message.attachments.array()[0].url : null;
+    let explanationType;
+
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const urlifiedValue = value.replace(urlRegex, url => '<' + url + '>');
+    const urlIndex = voca.search(value, urlRegex);
+
+    if (attachmentUrl) {
+      explanationType = 'image';
+      value = attachmentUrl;
+    } else if (urlIndex === 0) {
+      explanationType = 'url';
+      value = value.replace(urlRegex, url => '<' + url + '>');
+    } else {
+      explanationType = 'text';
+    }
 
     if (!keyExists) {
       await knex('explanations').insert({
         key,
-        explanation: urlifiedValue,
+        explanation: value,
         user: authorId,
-        guild: guildId
+        guild: guildId,
+        type: explanationType
       });
-
       message.react('✅');
     } else {
       await knex('explanations')
         .update({
           explanation: value,
-          user: authorId
+          user: authorId,
+          type: explanationType
         })
         .whereRaw('LOWER(key) LIKE ?', '%' + key.toLowerCase() + '%');
       message.react('✅');
