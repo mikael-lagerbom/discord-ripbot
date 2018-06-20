@@ -55,7 +55,7 @@ const addExplanation = async message => {
     const authorId = await users.getUserId(message.author);
     const [keyExists] = await getKey(key, guildId);
 
-    const attachmentUrl = message.attachments ? message.attachments.array()[0].url : null;
+    const attachmentUrl = message.attachments.array().length > 0 ? message.attachments.array()[0].url : null;
     let explanationType;
 
     const urlRegex = /(https?:\/\/[^\s]+)/g;
