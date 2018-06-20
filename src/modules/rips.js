@@ -6,7 +6,9 @@ const guilds = require('./guilds');
 const users = require('./users');
 
 const getRip = async message => {
-  const guildId = await guilds.getGuildId(message.channel.guild);
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+
   const rip = await knex('rips')
     .pluck('rip')
     .where('guild', guildId)
@@ -29,7 +31,8 @@ const addRip = async message => {
   if (ripText.length > 50) message.channel.send('rip on liian pitkä');
   else if (ripText.indexOf('@') > -1) message.channel.send('älä oo perseestä');
   else {
-    const guildId = await guilds.getGuildId(message.channel.guild);
+    const guildId = await guilds.getGuildId(message);
+    if (!guildId) return null;
 
     const [ripExists] = await getSpecificRip(ripText, guildId);
 
@@ -53,7 +56,8 @@ const addRip = async message => {
 
 const delRip = async message => {
   const ripText = parseRipText(message.content);
-  const guildId = await guilds.getGuildId(message.channel.guild);
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
 
   const [ripExists] = await getSpecificRip(ripText, guildId);
 

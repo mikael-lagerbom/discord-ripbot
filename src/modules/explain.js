@@ -11,7 +11,8 @@ const parseQuery = message => voca.slice(message.content, 1, message.content.len
 
 const getExplanation = async message => {
   const key = parseQuery(message);
-  const guildId = await guilds.getGuildId(message.channel.guild);
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
 
   const [keyExists] = await getKey(key, guildId);
 
@@ -51,7 +52,9 @@ const addExplanation = async message => {
   else if (key.length > 100) message.channel.send('termi on liian pitkä');
   else if (message.content.indexOf('@') > -1) message.channel.send('älä oo perseestä');
   else {
-    const guildId = await guilds.getGuildId(message.channel.guild);
+    const guildId = await guilds.getGuildId(message);
+    if (!guildId) return null;
+
     const authorId = await users.getUserId(message.author);
     const [keyExists] = await getKey(key, guildId);
 
@@ -85,6 +88,7 @@ const addExplanation = async message => {
         .update({
           explanation: value,
           user: authorId,
+          guild: guildId,
           type: explanationType
         })
         .whereRaw('LOWER(key) LIKE ?', '%' + key.toLowerCase() + '%');
@@ -98,7 +102,8 @@ const parseForgetKey = message => voca.slice(message.content, 8, message.content
 
 const delExplanation = async message => {
   const key = parseForgetKey(message);
-  const guildId = await guilds.getGuildId(message.channel.guild);
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
 
   const [keyExists] = await getKey(key, guildId);
 
@@ -114,24 +119,35 @@ const delExplanation = async message => {
 };
 
 const listExplanations = async message => {
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+
   const explanations = await knex('explanations')
     .pluck('key')
-    .where('type', 'text');
-
+    .where('type', 'text')
+    .andWhere('guild', guildId);
   message.author.send('Termit: ' + explanations.join(', '));
 };
 
 const listImages = async message => {
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+
   const images = await knex('explanations')
     .pluck('key')
-    .where('type', 'image');
+    .where('type', 'image')
+    .andWhere('guild', guildId);
   message.author.send('Kuvat: ' + images.join(', '));
 };
 
 const listUrls = async message => {
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+
   const urls = await knex('explanations')
     .pluck('key')
-    .where('type', 'url');
+    .where('type', 'url')
+    .andWhere('guild', guildId);
   message.author.send('Linkit: ' + urls.join(', '));
 };
 

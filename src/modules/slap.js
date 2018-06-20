@@ -11,7 +11,9 @@ const slap = async message => {
   } else if (messageWords.length > 2) {
     message.channel.send('älä haukkaa enempää kun voit niellä');
   } else {
-    const guildId = await guilds.getGuildId(message.channel.guild);
+    const guildId = await guilds.getGuildId(message);
+    if (!guildId) return null;
+
     const slapperId = await users.getUserId(message.author);
 
     const mentions = message.mentions.users;
