@@ -41,6 +41,34 @@ const computerSaysNo = () => {
   return randInt === plsTrigger;
 };
 
+const sendHelp = message => {
+  const helpString = `
+   Useable commands:
+   - !addrip <rip message> adds a new rip to the database
+   - !delrip <rip message> deletes a rip if it exists
+   - !decide <option, option, option...> chooses one of the options
+   - !roll <number, optional> rolls a random number between 0-100 (or given number)
+   - !ismo responds with a random Ismo Laitela quote
+   - !viisaus responds with a random finnish wisdom
+   - !kissefakta responds with a random cat fact
+   - !slap <tagged member> slaps the target and removes the command message
+   - !rips reacts with the amount of rips in the database
+   - !vituttaa responds with a random thing that frustrates
+   - !tunteisiin same thing as !vituttaa
+   - !toive gives instructions on how to contribute to the development of the bot
+   - !heimotaistelu makes two people fight
+   - !ruoka gives you a suggestion for food
+   - !opi <term: explanation> saves a term and an explanation for the term
+   - !opi <term: url> saves an url without the preview
+   - !opi <term:> as a comment to an image saves the term and the image
+   - !selitykset sends a private message with a list of the terms explained
+   - !kuvat sends a private message with a list of the images saved
+   - !linkit sends a private message with a list of the urls saved
+   - !help sends a private message with this information
+  `;
+  message.author.send(helpString);
+};
+
 const handleMessage = async message => {
   // Words with separators, for commands
   const messageContent = message.content.toLowerCase().split(' ');
@@ -95,6 +123,17 @@ const handleMessage = async message => {
     case '!unohda':
       explanations.delExplanation(message);
       break;
+    case '!selitykset':
+      explanations.listExplanations(message);
+      break;
+    case '!kuvat':
+      explanations.listImages(message);
+      break;
+    case '!linkit':
+      explanations.listUrls(message);
+      break;
+    case '!help':
+      sendHelp(message);
     default:
       if (message.content[0] === '?' && message.content.length > 1) {
         explanations.getExplanation(message, messageWords);

@@ -113,4 +113,26 @@ const delExplanation = async message => {
   }
 };
 
-module.exports = { getExplanation, addExplanation, delExplanation };
+const listExplanations = async message => {
+  const explanations = await knex('explanations')
+    .pluck('key')
+    .where('type', 'text');
+
+  message.author.send('Termit: ' + explanations.join(', '));
+};
+
+const listImages = async message => {
+  const images = await knex('explanations')
+    .pluck('key')
+    .where('type', 'image');
+  message.author.send('Kuvat: ' + images.join(', '));
+};
+
+const listUrls = async message => {
+  const urls = await knex('explanations')
+    .pluck('key')
+    .where('type', 'url');
+  message.author.send('Linkit: ' + urls.join(', '));
+};
+
+module.exports = { getExplanation, addExplanation, delExplanation, listExplanations, listImages, listUrls };
