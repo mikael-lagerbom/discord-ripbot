@@ -34,7 +34,7 @@ const getExplanation = async message => {
 const getKey = async (key, guild) => {
   return knex('explanations')
     .select('id', 'key')
-    .whereRaw('LOWER(key) LIKE ?', '%' + key.toLowerCase() + '%')
+    .whereRaw('LOWER(key) LIKE ?', key.toLowerCase())
     .andWhere('guild', guild);
 };
 
