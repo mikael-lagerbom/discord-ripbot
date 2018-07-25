@@ -3,6 +3,7 @@ const path = require('path');
 const MersenneTwister = require('mersenne-twister');
 const voca = require('voca');
 
+const apply = require('./apply');
 const catfacts = require('./catfacts');
 const decide = require('./decide');
 const explanations = require('./explain');
@@ -65,6 +66,7 @@ const sendHelp = message => {
    - !kuvat sends a private message with a list of the images saved
    - !linkit sends a private message with a list of the urls saved
    - !help sends a private message with this information
+   - !hakemus <place to apply to> decides your fate regarding the place
   `;
   message.author.send(helpString);
 };
@@ -84,7 +86,7 @@ const handleMessage = async message => {
     case '!decide':
       decide.decide(message);
       break;
-    case '!roll!':
+    case '!roll':
       roll.roll(message, messageWords, generator);
       break;
     case '!ismo':
@@ -134,6 +136,10 @@ const handleMessage = async message => {
       break;
     case '!help':
       sendHelp(message);
+      break;
+    case '!hakemus':
+      apply.apply(message, messageWords, generator);
+      break;
     default:
       if (message.content[0] === '?' && message.content.length > 1) {
         explanations.getExplanation(message, messageWords);
