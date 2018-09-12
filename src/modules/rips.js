@@ -28,7 +28,7 @@ const parseRipText = message => voca.splice(message, 0, 8);
 
 const addRip = async message => {
   const ripText = parseRipText(message.content);
-  if (ripText.length > 50) message.channel.send('rip on liian pitkä');
+  if (ripText.length > 200) message.channel.send('rip on liian pitkä');
   else if (ripText.indexOf('@') > -1) message.channel.send('älä oo perseestä');
   else {
     const guildId = await guilds.getGuildId(message);
