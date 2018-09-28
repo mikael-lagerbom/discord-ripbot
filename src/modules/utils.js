@@ -9,6 +9,7 @@ const decide = require('./decide');
 const explanations = require('./explain');
 const frustrations = require('./frustrations');
 const ismo = require('./ismo_quotes');
+const quotes = require('./quotes');
 const requests = require('./requests');
 const rips = require('./rips');
 const roll = require('./roll');
@@ -67,7 +68,10 @@ const sendHelp = message => {
    - !linkit sends a private message with a list of the urls saved
    - !help sends a private message with this information
    - !hakemus <place to apply to> decides your fate regarding the place
-  `;
+   - !quote <name, optional> fetches a random quote from the person, if given, random if not
+   - !addquote <name>: <quote> adds a new quote to the given person
+   - !delquote, not yet implemented
+   `;
   message.author.send(helpString);
 };
 
@@ -139,6 +143,12 @@ const handleMessage = async message => {
       break;
     case '!hakemus':
       apply.apply(message, messageWords, generator);
+      break;
+    case '!addquote':
+      quotes.addQuote(message);
+      break;
+    case '!quote':
+      quotes.getQuote(message);
       break;
     default:
       if (message.content[0] === '?' && message.content.length > 1) {
