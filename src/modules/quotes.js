@@ -24,7 +24,7 @@ const getQuote = async message => {
       const [quote] = await knex('quotes')
         .pluck('quote')
         .where('guild', guildId)
-        .andWhere('name', name)
+        .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase())
         .orderByRaw('random()')
         .limit(1);
       if (quote) message.channel.send(`${quote} -${name}`);
