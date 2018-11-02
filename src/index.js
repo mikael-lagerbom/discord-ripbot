@@ -35,4 +35,8 @@ client.on('message', message => {
   }
 });
 
-client.login(token);
+try {
+  client.login(token);
+} catch (err) {
+  throw err;
+}
