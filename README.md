@@ -1,6 +1,6 @@
 # discord-ripbot
 
-The Fabulous Ripbot for Discord
+The Fabulous Ripbot Reborn for Discord
 
 ## How to develop
 
