@@ -1,53 +1,52 @@
-const https = require('https');
+const axios = require('axios');
 
-const affixes = (message, ...args) => {
-  var region = 'eu';
-  var regionRegex = /^(eu|us|kr|tw)$/g;
-  var flagRegex = /^(explained)$/g;
-  var flags = {
+const affixes = async (message, ...args) => {
+  const regionRegex = /^(eu|us|kr|tw)$/g;
+  const flagRegex = /^(explained)$/g;
+
+  const usage = 'Usage: !affixes <us|eu|kr|tw> <explained>';
+  const errorMessage = 'Failed to get data from raider.io.';
+
+  const options = {
+    region: 'eu',
     explained: false
   };
 
   if (args.length > 2) {
-    message.channel.send('Usage: !affixes <us|eu|kr|tw> <explained>');
+    message.channel.send(usage);
   } else {
     if (args.length > 0) {
-      args.forEach(a => {
-        let regionMatch = regionRegex.exec(a);
-        if (regionMatch != null) region = regionMatch[0];
-        let flagMatch = flagRegex.exec(a);
-        if (flagMatch != null) flags[flagMatch[0]] = true;
+      //check for given options
+      args.forEach(arg => {
+        const regionMatch = regionRegex.exec(arg);
+        if (regionMatch) options.region = regionMatch[0];
+        if (flagRegex.exec(arg)) options.explained = true;
       });
     }
     // Some caching would be awesome
-    https
-      .get(`https://raider.io/api/v1/mythic-plus/affixes?region=${region}&locale=en`, res => {
-        res.on('data', data => {
-          if (data.length == 0) {
-            message.channel.send('Failed to get data from raider.io.');
-          } else {
-            var d = JSON.parse(data);
-            message.channel.send(formatMessage(d, flags));
-          }
-        });
-      })
-      .on('error', e => {
-        message.channel.send('Failed to get data from raider.io.');
-      });
+    try {
+      const returnedData = await axios.get(resolveUrl(options.region));
+      if (returnedData.length == 0) {
+        message.channel.send(errorMessage);
+      } else {
+        message.channel.send(formatMessage(returnedData.data, options.explained));
+      }
+    } catch (error) {
+      message.channel.send(errorMessage);
+    }
   }
 };
 
-const formatMessage = (data, flags) => {
-  var s = '';
-  if (flags.explained) {
-    data.affix_details.forEach(d => {
-      s += d.name + ': ' + d.description + '\n';
-    });
-  } else {
-    s = data.title;
-  }
+const resolveUrl = region => `https://raider.io/api/v1/mythic-plus/affixes?region=${region}&locale=en`;
 
-  return s;
+const formatMessage = (data, explained) => {
+  if (explained) {
+    return data.affix_details.reduce((messageString, affix) => {
+      return (messageString += affix.name + ': ' + affix.description + '\n');
+    }, '');
+  } else {
+    return data.title;
+  }
 };
 
 module.exports = { affixes };
