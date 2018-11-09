@@ -15,6 +15,7 @@ const rips = require('./rips');
 const roll = require('./roll');
 const slap = require('./slap');
 const wisdoms = require('./wisdoms');
+const affixes = require('./affixes');
 
 const seed = Date.now();
 const generator = new MersenneTwister(seed);
@@ -71,6 +72,7 @@ const sendHelp = message => {
    - !quote <name, optional> fetches a random quote from the person, if given, random if not
    - !addquote <name>: <quote> adds a new quote to the given person
    - !delquote, not yet implemented
+   - !affixes <region, optional> <explained, optional> gets the current affixes
    `;
   message.author.send(helpString);
 };
@@ -150,6 +152,8 @@ const handleMessage = async message => {
     case '!quote':
       quotes.getQuote(message);
       break;
+    case '!affixes':
+      affixes.affixes(message, ...messageWords.slice(1));
     default:
       if (message.content[0] === '?' && message.content.length > 1) {
         explanations.getExplanation(message, messageWords);
