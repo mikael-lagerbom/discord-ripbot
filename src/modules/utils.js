@@ -3,7 +3,9 @@ const path = require('path');
 const MersenneTwister = require('mersenne-twister');
 const voca = require('voca');
 
+const affixes = require('./affixes');
 const apply = require('./apply');
+const assaults = require('./assaults');
 const catfacts = require('./catfacts');
 const decide = require('./decide');
 const explanations = require('./explain');
@@ -15,7 +17,6 @@ const rips = require('./rips');
 const roll = require('./roll');
 const slap = require('./slap');
 const wisdoms = require('./wisdoms');
-const affixes = require('./affixes');
 
 const seed = Date.now();
 const generator = new MersenneTwister(seed);
@@ -154,6 +155,10 @@ const handleMessage = async message => {
       break;
     case '!affixes':
       affixes.affixes(message, ...messageWords.slice(1));
+      break;
+    case '!assault':
+      assaults.assault(message);
+      break;
     default:
       if (message.content[0] === '?' && message.content.length > 1) {
         explanations.getExplanation(message, messageWords);
