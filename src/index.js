@@ -26,11 +26,13 @@ client.on('ready', () => {
   console.log('I am ready!');
 });
 
-client.on('message', message => {
+client.on('message', async message => {
   if (!message.author.bot || message.content === 'rip in rip') {
-    if (utils.computerSaysNo()) {
+    if (await utils.computerComments()) {
       const username = message.author.username;
       message.channel.send(`${username} pls`);
+    } else if (await utils.computerComments()) {
+      message.channel.send(`tää :D`);
     } else {
       utils.handleMessage(message);
     }

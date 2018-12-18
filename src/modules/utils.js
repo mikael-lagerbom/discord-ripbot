@@ -37,9 +37,13 @@ const isInArray = (array, string) => {
   return array.indexOf(string.toLowerCase()) > -1;
 };
 
-const computerSaysNo = () => {
+// Filthy hack to fix rolling
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const computerComments = async () => {
   // adjust for fewer applications
-  const maxRand = 100;
+  await delay(200);
+  const maxRand = 75;
   const plsTrigger = Math.floor(maxRand / 2);
   const randInt = Math.floor(generator.random_incl() * Math.floor(maxRand));
   return randInt === plsTrigger;
@@ -168,4 +172,4 @@ const handleMessage = async message => {
   }
 };
 
-module.exports = { migrateLatest, runSeeds, isInArray, computerSaysNo, handleMessage };
+module.exports = { migrateLatest, runSeeds, isInArray, computerComments, handleMessage };
