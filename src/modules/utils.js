@@ -93,10 +93,10 @@ const handleMessage = async message => {
     case '!help':
       help.sendHelp(message);
       break;
-    case '!addquote':
+    case '!quote':
       quotes.addQuote(message);
       break;
-    case '!quote':
+    case '?quote':
       quotes.getQuote(message);
       break;
     case '!affixes':

@@ -24,8 +24,8 @@ const sendHelp = message => {
    - ?links sends a private message with a list of the urls saved
 
    **Quotes**
-   - !quote <name, optional> fetches a random quote from the person, if given, random if not
-   - !addquote <name>: <quote> adds a new quote to the given person
+   - !quote <name>: <quote> adds a new quote to the given person
+   - ?quote <name, optional> fetches a random quote from the person, if given, random if not
 
    **WoW-stuff**
    - !affixes <region, optional> <explained, optional> gets the current affixes
