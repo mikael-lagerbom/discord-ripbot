@@ -33,7 +33,7 @@ const getExplanation = async message => {
   const [keyExists] = await getKey(key, guildId);
 
   if (!keyExists) {
-    message.channel.send(`en tiedä mitä ${key} tarkoittaa`);
+    message.channel.send(`i don't know what ${key} means`);
   } else {
     const [explanation] = await knex('explanations')
       .select('key', 'explanation', 'type')
@@ -66,9 +66,9 @@ const parseValue = message =>
 const addExplanation = async message => {
   const key = parseKey(message);
   let value = parseValue(message);
-  if (value.length > 500) message.channel.send('selitys on liian pitkä');
-  else if (key.length > 100) message.channel.send('termi on liian pitkä');
-  else if (message.content.indexOf('@') > -1) message.channel.send('älä oo perseestä');
+  if (value.length > 500) message.channel.send('explanation is too long');
+  else if (key.length > 100) message.channel.send('term is too long');
+  else if (message.content.indexOf('@') > -1) message.channel.send("don't be an ass pls");
   else {
     const guildId = await guilds.getGuildId(message);
     if (!guildId) return null;
@@ -132,7 +132,7 @@ const delExplanation = async message => {
 
     message.react('✅');
   } else {
-    message.channel.send(`en tiedä mitä ${key} tarkoittaa`);
+    message.channel.send(`i don't know what ${key} means`);
   }
 };
 
@@ -144,7 +144,17 @@ const listExplanations = async message => {
     .pluck('key')
     .where('type', 'text')
     .andWhere('guild', guildId);
-  message.author.send('Termit: ' + explanations.join(', '));
+  message.author.send('All types of explanations: ' + explanations.join(', '));
+};
+
+const listTerms = async message => {
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+
+  const explanations = await knex('explanations')
+    .pluck('key')
+    .andWhere('guild', guildId);
+  message.author.send('Terms: ' + explanations.join(', '));
 };
 
 const listImages = async message => {
@@ -155,7 +165,7 @@ const listImages = async message => {
     .pluck('key')
     .where('type', 'image')
     .andWhere('guild', guildId);
-  message.author.send('Kuvat: ' + images.join(', '));
+  message.author.send('Files: ' + images.join(', '));
 };
 
 const listUrls = async message => {
@@ -166,7 +176,7 @@ const listUrls = async message => {
     .pluck('key')
     .where('type', 'url')
     .andWhere('guild', guildId);
-  message.author.send('Linkit: ' + urls.join(', '));
+  message.author.send('Links: ' + urls.join(', '));
 };
 
 module.exports = {
@@ -175,6 +185,7 @@ module.exports = {
   addExplanation,
   delExplanation,
   listExplanations,
+  listTerms,
   listImages,
   listUrls
 };

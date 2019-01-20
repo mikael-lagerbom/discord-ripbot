@@ -8,10 +8,10 @@ const roll = (message, messageWords, generator) => {
       const randInt = Math.floor(generator.random_incl() * Math.floor(limit));
       message.channel.send(randInt);
     } else {
-      message.channel.send('yritä nyt');
+      message.channel.send('try pls');
     }
   } else {
-    message.channel.send('yritä nyt');
+    message.channel.send('try pls');
   }
 };
 

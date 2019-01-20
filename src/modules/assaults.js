@@ -6,7 +6,7 @@ const assault = async message => {
   const response = await axios.get(url);
   const assaultText = response.data.next;
 
-  message.channel.send(assaultText || 'Seuraavan assaultin haku epäonnistui, syytä Execiä');
+  message.channel.send(assaultText || 'Fetching the next assault failed, blame the author.');
 };
 
 module.exports = { assault };

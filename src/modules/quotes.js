@@ -19,7 +19,7 @@ const getQuote = async message => {
     [quoteExists] = await getName(name, guildId);
 
     if (!quoteExists) {
-      message.channel.send(`en tiedä mitä ${name} on sanonut`);
+      message.channel.send(`i don't know what ${name} has said`);
     } else {
       const [quote] = await knex('quotes')
         .pluck('quote')
@@ -28,7 +28,7 @@ const getQuote = async message => {
         .orderByRaw('random()')
         .limit(1);
       if (quote) message.channel.send(`${quote} -${name}`);
-      else message.channel.send('yhtään lainausta ei löytynyt');
+      else message.channel.send('no quotes found');
     }
   } else {
     const [quote] = await knex('quotes')
@@ -37,7 +37,7 @@ const getQuote = async message => {
       .orderByRaw('random()')
       .limit(1);
     if (quote) message.channel.send(`${quote.quote} -${quote.name}`);
-    else message.channel.send('yhtään lainausta ei löytynyt');
+    else message.channel.send('no quotes found');
   }
 };
 
@@ -57,15 +57,15 @@ const parseQuote = message =>
 
 const addQuote = async message => {
   if (voca.indexOf(message.content, ':') == -1) {
-    message.channel.send('yritä nyt edes');
+    message.channel.send('try pls');
     return null;
   }
 
   const name = parseNameAdd(message);
   const quote = parseQuote(message);
   if (name && quote) {
-    if (quote.length > 500) message.channel.send('lainaus on liian pitkä');
-    else if (name.length > 100) message.channel.send('nimi on liian pitkä');
+    if (quote.length > 500) message.channel.send('quote is too long');
+    else if (name.length > 100) message.channel.send('name is too long');
     else {
       const guildId = await guilds.getGuildId(message);
       if (!guildId) return null;
@@ -81,7 +81,7 @@ const addQuote = async message => {
       message.react('✅');
     }
   } else {
-    message.channel.send('yritä nyt edes');
+    message.channel.send('try pls');
   }
 };
 

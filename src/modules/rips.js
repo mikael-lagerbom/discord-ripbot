@@ -28,8 +28,8 @@ const parseRipText = message => voca.splice(message, 0, 8);
 
 const addRip = async message => {
   const ripText = parseRipText(message.content);
-  if (ripText.length > 200) message.channel.send('rip on liian pitkä');
-  else if (ripText.indexOf('@') > -1) message.channel.send('älä oo perseestä');
+  if (ripText.length > 200) message.channel.send('rip is too long');
+  else if (ripText.indexOf('@') > -1) message.channel.send("don't be an ass");
   else {
     const guildId = await guilds.getGuildId(message);
     if (!guildId) return null;
@@ -49,7 +49,7 @@ const addRip = async message => {
 
       message.react('✅');
     } else {
-      message.channel.send(`"${ripExists.rip}" on jo listassa`);
+      message.channel.send(`"${ripExists.rip}" is already saved`);
     }
   }
 };
@@ -69,7 +69,7 @@ const delRip = async message => {
 
     message.react('✅');
   } else {
-    message.channel.send(`"${ripText}" ei ole rippien listassa`);
+    message.channel.send(`"${ripText}" isn't saved`);
   }
 };
 

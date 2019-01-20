@@ -4,19 +4,14 @@ const MersenneTwister = require('mersenne-twister');
 const voca = require('voca');
 
 const affixes = require('./affixes');
-const apply = require('./apply');
 const assaults = require('./assaults');
 const catfacts = require('./catfacts');
 const decide = require('./decide');
 const explanations = require('./explain');
-const frustrations = require('./frustrations');
 const ismo = require('./ismo_quotes');
 const quotes = require('./quotes');
-const requests = require('./requests');
 const rips = require('./rips');
 const roll = require('./roll');
-const slap = require('./slap');
-const wisdoms = require('./wisdoms');
 
 const seed = Date.now();
 const generator = new MersenneTwister(seed);
@@ -52,32 +47,42 @@ const computerComments = async () => {
 const sendHelp = message => {
   const helpString = `
    Useable commands:
+   **Rips**
    - !addrip <rip message> adds a new rip to the database
    - !delrip <rip message> deletes a rip if it exists
+   - !rips reacts with the amount of rips in the database
+   - rip in a message responds with a random saved rip
+
+   **Utility**
    - !decide <option, option, option...> chooses one of the options
    - !roll <number, optional> rolls a random number between 0-100 (or given number)
-   - !ismo responds with a random Ismo Laitela quote
-   - !viisaus responds with a random finnish wisdom
-   - !kissefakta responds with a random cat fact
-   - !slap <tagged member> slaps the target and removes the command message
-   - !rips reacts with the amount of rips in the database
-   - !vituttaa responds with a random thing that frustrates
-   - !tunteisiin same thing as !vituttaa
-   - !toive gives instructions on how to contribute to the development of the bot
-   - !heimotaistelu makes two people fight
-   - !ruoka gives you a suggestion for food
-   - !opi <term: explanation> saves a term and an explanation for the term
-   - !opi <term: url> saves an url without the preview
-   - !opi <term:> as a comment to an image saves the term and the image
-   - !selitykset sends a private message with a list of the terms explained
-   - !kuvat sends a private message with a list of the images saved
-   - !linkit sends a private message with a list of the urls saved
-   - !help sends a private message with this information
-   - !hakemus <place to apply to> decides your fate regarding the place
+
+   **Explanations**
+   - !learn <term: explanation> saves a term and an explanation for the term
+   - !learn <term: url> saves an url without the preview
+   - !learn <term:> as a comment to an image saves the term and the image
+
+   - ?<term> responds with the saved term's explanation
+   - ?random responds with a random explanation
+   - ?explanations sends a private message with a list of all the saved stuff
+   - ?terms send a private message with a list of the terms saved
+   - ?files sends a private message with a list of the images saved
+   - ?links sends a private message with a list of the urls saved
+
+   **Quotes**
    - !quote <name, optional> fetches a random quote from the person, if given, random if not
    - !addquote <name>: <quote> adds a new quote to the given person
-   - !delquote, not yet implemented
+
+   **WoW-stuff**
    - !affixes <region, optional> <explained, optional> gets the current affixes
+   - !assault fetches the start time of the next assault, or the duration of the current one
+
+   **Random fun**
+   - !ismo responds with a random Ismo Laitela quote
+   - !catfact responds with a random cat fact
+
+   **GitHub**
+   - <https://github.com/mikhepls/discord-ripbot>
    `;
   message.author.send(helpString);
 };
@@ -103,53 +108,32 @@ const handleMessage = async message => {
     case '!ismo':
       ismo.getQuote(message);
       break;
-    case '!viisaus':
-      wisdoms.getWisdom(message);
-      break;
-    case '!kissefakta':
+    case '!catfact':
       catfacts.getCatfact(message);
-      break;
-    case '!slap':
-      slap.slap(message);
       break;
     case '!rips':
       rips.ripCount(message);
       break;
-    case '!vituttaa':
-      frustrations.getFrustration(message, 'vituttaa');
-      break;
-    case '!tunteisiin':
-      frustrations.getFrustration(message, 'menee tunteisiin');
-      break;
-    case '!toive':
-      requests.sendFeatureRequest(message);
-      break;
-    case '!heimotaistelu':
-      requests.sendFeatureRequest(message);
-      break;
-    case '!ruoka':
-      requests.sendFeatureRequest(message);
-      break;
-    case '!opi':
+    case '!learn':
       explanations.addExplanation(message);
       break;
-    case '!unohda':
+    case '!forget':
       explanations.delExplanation(message);
       break;
-    case '!selitykset':
+    case '?explanations':
       explanations.listExplanations(message);
       break;
-    case '!kuvat':
+    case '?terms':
+      explanations.listTerms(message);
+      break;
+    case '?files':
       explanations.listImages(message);
       break;
-    case '!linkit':
+    case '?links':
       explanations.listUrls(message);
       break;
     case '!help':
       sendHelp(message);
-      break;
-    case '!hakemus':
-      apply.apply(message, messageWords, generator);
       break;
     case '!addquote':
       quotes.addQuote(message);
