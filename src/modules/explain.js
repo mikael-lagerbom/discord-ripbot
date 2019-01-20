@@ -9,6 +9,22 @@ const users = require('./users');
 // '?' <- one character
 const parseQuery = message => voca.slice(message.content, 1, message.content.length);
 
+const getKey = async (key, guild) => {
+  return knex('explanations')
+    .select('id', 'key')
+    .whereRaw('LOWER(key) LIKE ?', key.toLowerCase())
+    .andWhere('guild', guild);
+};
+
+const sendExplanation = (explanation, message) => {
+  if (explanation.type === 'image') {
+    const explanationAttachment = new Discord.Attachment(explanation.explanation);
+    message.channel.send(`${explanation.key}:`, explanationAttachment);
+  } else {
+    message.channel.send(`${explanation.key}: ${explanation.explanation}`);
+  }
+};
+
 const getExplanation = async message => {
   const key = parseQuery(message);
   const guildId = await guilds.getGuildId(message);
@@ -20,22 +36,24 @@ const getExplanation = async message => {
     message.channel.send(`en tiedä mitä ${key} tarkoittaa`);
   } else {
     const [explanation] = await knex('explanations')
-      .select('explanation', 'type')
+      .select('key', 'explanation', 'type')
       .where('id', keyExists.id);
-    if (explanation.type === 'image') {
-      const explanationAttachment = new Discord.Attachment(explanation.explanation);
-      message.channel.send(`${keyExists.key}:`, explanationAttachment);
-    } else {
-      message.channel.send(`${keyExists.key}: ${explanation.explanation}`);
-    }
+
+    sendExplanation(explanation, message, keyExists);
   }
 };
 
-const getKey = async (key, guild) => {
-  return knex('explanations')
-    .select('id', 'key')
-    .whereRaw('LOWER(key) LIKE ?', key.toLowerCase())
-    .andWhere('guild', guild);
+const getRandomExplanation = async message => {
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+
+  const [explanation] = await knex('explanations')
+    .select('key', 'explanation', 'type')
+    .where('guild', guildId)
+    .orderByRaw('random()')
+    .limit(1);
+
+  sendExplanation(explanation, message);
 };
 
 // '!opi ' <- 5 characters
@@ -151,4 +169,12 @@ const listUrls = async message => {
   message.author.send('Linkit: ' + urls.join(', '));
 };
 
-module.exports = { getExplanation, addExplanation, delExplanation, listExplanations, listImages, listUrls };
+module.exports = {
+  getExplanation,
+  getRandomExplanation,
+  addExplanation,
+  delExplanation,
+  listExplanations,
+  listImages,
+  listUrls
+};

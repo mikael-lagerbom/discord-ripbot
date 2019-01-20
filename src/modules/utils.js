@@ -163,6 +163,9 @@ const handleMessage = async message => {
     case '!assault':
       assaults.assault(message);
       break;
+    case '?random':
+      explanations.getRandomExplanation(message);
+      break;
     default:
       if (message.content[0] === '?' && message.content.length > 1) {
         explanations.getExplanation(message, messageWords);
