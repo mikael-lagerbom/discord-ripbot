@@ -56,8 +56,8 @@ const getRandomExplanation = async message => {
   sendExplanation(explanation, message);
 };
 
-// '!opi ' <- 5 characters
-const parseKey = message => voca.slice(message.content, 5, voca.indexOf(message.content, ':'));
+// '!learn ' <- 7 characters
+const parseKey = message => voca.slice(message.content, 7, voca.indexOf(message.content, ':'));
 
 // ': ' <- 2 characters
 const parseValue = message =>
@@ -67,6 +67,7 @@ const addExplanation = async message => {
   const key = parseKey(message);
   let value = parseValue(message);
   if (value.length > 500) message.channel.send('explanation is too long');
+  else if (voca.indexOf(message.content, ':') === -1) message.channel.send('try pls');
   else if (key.length > 100) message.channel.send('term is too long');
   else if (message.content.indexOf('@') > -1) message.channel.send("don't be an ass pls");
   else {
@@ -115,7 +116,7 @@ const addExplanation = async message => {
   }
 };
 
-// '!unohda ' <- 8 characters
+// '!forget ' <- 8 characters
 const parseForgetKey = message => voca.slice(message.content, 8, message.content.length);
 
 const delExplanation = async message => {
