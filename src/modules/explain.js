@@ -146,6 +146,7 @@ const listExplanations = async message => {
     .where('type', 'text')
     .andWhere('guild', guildId);
   message.author.send('All types of explanations: ' + explanations.join(', '));
+  message.react('✅');
 };
 
 const listTerms = async message => {
@@ -156,6 +157,7 @@ const listTerms = async message => {
     .pluck('key')
     .andWhere('guild', guildId);
   message.author.send('Terms: ' + explanations.join(', '));
+  message.react('✅');
 };
 
 const listImages = async message => {
@@ -167,6 +169,7 @@ const listImages = async message => {
     .where('type', 'image')
     .andWhere('guild', guildId);
   message.author.send('Files: ' + images.join(', '));
+  message.react('✅');
 };
 
 const listUrls = async message => {
@@ -178,6 +181,7 @@ const listUrls = async message => {
     .where('type', 'url')
     .andWhere('guild', guildId);
   message.author.send('Links: ' + urls.join(', '));
+  message.react('✅');
 };
 
 module.exports = {
