@@ -48,8 +48,8 @@ const getName = async (name, guild) => {
     .andWhere('guild', guild);
 };
 
-// '!addquote '
-const parseNameAdd = message => voca.slice(message.content, 10, voca.indexOf(message.content, ':'));
+// '!quote '
+const parseNameAdd = message => voca.slice(message.content, 7, voca.indexOf(message.content, ':'));
 
 // ': '
 const parseQuote = message =>
