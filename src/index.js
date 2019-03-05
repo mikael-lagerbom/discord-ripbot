@@ -27,16 +27,7 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-  if (!message.author.bot || message.content === 'rip in rip') {
-    if (await utils.computerComments()) {
-      const username = message.author.username;
-      message.channel.send(`${username} pls`);
-    } else if (await utils.computerComments()) {
-      message.channel.send(`tää :D`);
-    } else {
-      utils.handleMessage(message);
-    }
-  }
+  utils.handleMessage(message);
 });
 
 const login = async () => {
