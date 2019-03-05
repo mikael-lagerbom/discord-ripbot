@@ -26,6 +26,8 @@ const sendHelp = message => {
    **Quotes**
    - !quote <name>: <quote> adds a new quote to the given person
    - ?quote <name, optional> fetches a random quote from the person, if given, random if not
+   - !quotes reacts with the amount of quotes in the database
+
 
    **WoW-stuff**
    - !affixes <region, optional> <explained, optional> gets the current affixes

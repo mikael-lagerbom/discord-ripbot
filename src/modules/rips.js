@@ -2,6 +2,7 @@ const voca = require('voca');
 
 const knex = require('../knex');
 
+const helpers = require('./helpers');
 const guilds = require('./guilds');
 const users = require('./users');
 
@@ -39,7 +40,7 @@ const addRip = async message => {
     if (!ripExists) {
       const authorId = await users.getUserId(message.author);
 
-      const rip = await knex('rips')
+      await knex('rips')
         .insert({
           rip: ripText,
           user: authorId,
@@ -73,26 +74,16 @@ const delRip = async message => {
   }
 };
 
-const getKeyByValue = (object, value) => Object.keys(object).find(key => object[key] === value);
-
 const ripCount = async message => {
-  const emojis = {
-    '\u0031\u20E3': 1,
-    '\u0032\u20E3': 2,
-    '\u0033\u20E3': 3,
-    '\u0034\u20E3': 4,
-    '\u0035\u20E3': 5,
-    '\u0036\u20E3': 6,
-    '\u0037\u20E3': 7,
-    '\u0038\u20E3': 8,
-    '\u0039\u20E3': 9,
-    '\u0030\u20E3': 0
-  };
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
 
-  const result = await knex('rips').count('*');
+  const result = await knex('rips')
+    .count('*')
+    .where('guild', guildId);
   const numberArray = [...(result[0].count + '')].map(n => parseInt(n));
   for (const number of numberArray) {
-    const emoji = getKeyByValue(emojis, number);
+    const emoji = helpers.getKeyByValue(helpers.emojis, number);
     await message.react(emoji);
   }
 };

@@ -99,6 +99,9 @@ const handleMessage = async message => {
     case '?quote':
       quotes.getQuote(message);
       break;
+    case '!quotes':
+      quotes.quoteCount(message);
+      break;
     case '!affixes':
       affixes.affixes(message, ...messageWords.slice(1));
       break;
@@ -113,7 +116,7 @@ const handleMessage = async message => {
         explanations.getExplanation(message, messageWords);
       } else if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
-      } else if (await utils.computerComments()) {
+      } else if (await computerComments()) {
         message.channel.send(`tää :D`);
       }
   }

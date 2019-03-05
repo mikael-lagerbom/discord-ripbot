@@ -2,6 +2,7 @@ const voca = require('voca');
 
 const knex = require('../knex');
 
+const helpers = require('./helpers');
 const guilds = require('./guilds');
 const users = require('./users');
 
@@ -85,4 +86,18 @@ const addQuote = async message => {
   }
 };
 
-module.exports = { getQuote, addQuote };
+const quoteCount = async message => {
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+
+  const result = await knex('quotes')
+    .count('*')
+    .where('guild', guildId);
+  const numberArray = [...(result[0].count + '')].map(n => parseInt(n));
+  for (const number of numberArray) {
+    const emoji = helpers.getKeyByValue(helpers.emojis, number);
+    await message.react(emoji);
+  }
+};
+
+module.exports = { getQuote, addQuote, quoteCount };

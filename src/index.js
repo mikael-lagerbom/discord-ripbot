@@ -12,9 +12,8 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const start = async () => {
   utils.migrateLatest(knex).then(async () => {
-    const wisdoms = await knex('wisdoms').select('id');
     const ismoQuotes = await knex('ismo_quotes').select('id');
-    if (wisdoms.length === 0 || ismoQuotes.length === 0) {
+    if (ismoQuotes.length === 0) {
       return utils.runSeeds(knex);
     }
   });
