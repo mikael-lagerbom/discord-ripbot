@@ -114,9 +114,6 @@ const handleMessage = async message => {
       } else if (isInArray(messageWords, 'rip')) {
         rips.getRip(message);
       } else if (await utils.computerComments()) {
-        const username = message.author.username;
-        message.channel.send(`${username} pls`);
-      } else if (await utils.computerComments()) {
         message.channel.send(`tää :D`);
       }
   }

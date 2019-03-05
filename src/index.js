@@ -28,7 +28,12 @@ client.on('ready', () => {
 
 client.on('message', async message => {
   if (!message.author.bot) {
-    utils.handleMessage(message);
+    if (await utils.computerComments()) {
+      const username = message.author.username;
+      message.channel.send(`${username} pls`);
+    } else {
+      utils.handleMessage(message);
+    }
   }
 });
 
