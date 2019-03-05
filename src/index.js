@@ -27,7 +27,9 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-  utils.handleMessage(message);
+  if (!message.author.bot) {
+    utils.handleMessage(message);
+  }
 });
 
 const login = async () => {
