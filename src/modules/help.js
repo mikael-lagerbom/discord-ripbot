@@ -36,9 +36,6 @@ const sendHelp = message => {
    **Random fun**
    - !ismo responds with a random Ismo Laitela quote
    - !catfact responds with a random cat fact
-
-   **GitHub**
-   - <https://github.com/mikhepls/discord-ripbot>
    `;
 
   message.react('✅');
