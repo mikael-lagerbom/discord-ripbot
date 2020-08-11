@@ -30,6 +30,10 @@ const getExplanation = async message => {
   const guildId = await guilds.getGuildId(message);
   if (!guildId) return null;
 
+  // check that the string has some alphanumeric characters
+  const alphanumericKey = key.replace(/[^a-z0-9]/gi, '');
+  if (!alphanumericKey) return null;
+
   const [keyExists] = await getKey(key, guildId);
 
   if (!keyExists) {
@@ -75,6 +79,11 @@ const addExplanation = async message => {
     if (!guildId) return null;
 
     const authorId = await users.getUserId(message.author);
+
+    // check that the string has some alphanumeric characters
+    const alphanumericKey = key.replace(/[^a-z0-9]/gi, '');
+    if (!alphanumericKey) return null;
+
     const [keyExists] = await getKey(key, guildId);
 
     const attachmentUrl = message.attachments.array().length > 0 ? message.attachments.array()[0].url : null;
