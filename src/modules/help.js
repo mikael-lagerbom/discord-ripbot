@@ -31,7 +31,6 @@ const sendHelp = message => {
 
    **WoW-stuff**
    - !affixes <region, optional> <explained, optional> gets the current affixes
-   - !assault fetches the start time of the next assault, or the duration of the current one
 
    **Random fun**
    - !ismo responds with a random Ismo Laitela quote
