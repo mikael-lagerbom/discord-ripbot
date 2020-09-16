@@ -17,7 +17,7 @@ services:
       - database
 
   database:
-    image: postgres:9.6.3-alpine
+    image: postgres:10.14-alpine
     environment:
       - POSTGRES_DB=ripbot
       - POSTGRES_USER=ripbot

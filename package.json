@@ -8,8 +8,8 @@
     "url": "https://github.org/mikhepls/discord-ripbot"
   },
   "engines": {
-    "node": ">=8.9.4",
-    "npm": ">=5.6.0"
+    "node": ">=14.11",
+    "npm": ">=6.14"
   },
   "devDependencies": {
     "eslint": "4.18.2",
@@ -24,10 +24,10 @@
     "axios": "0.18.0",
     "discord.js": "11.3.0",
     "dotenv": "5.0.1",
-    "knex": "0.14.4",
+    "knex": "0.21.5",
     "mersenne-twister": "1.1.0",
     "nodemon": "1.17.1",
-    "pg": "7.4.1",
+    "pg": "8.3.3",
     "voca": "1.4.0"
   },
   "scripts": {
