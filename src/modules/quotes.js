@@ -6,13 +6,6 @@ const helpers = require('./helpers');
 const guilds = require('./guilds');
 const users = require('./users');
 
-const getName = async (name, guild) => {
-  return knex('quotes')
-    .select('id', 'name')
-    .whereRaw('LOWER(name) LIKE ?', name.toLowerCase())
-    .andWhere('guild', guild);
-};
-
 // '!quote '
 const parseNameQuery = message =>
   voca.slice(
@@ -22,20 +15,17 @@ const parseNameQuery = message =>
   );
 
 const getQuote = async message => {
-  const name = parseNameQuery(message).trim();
+  let name = parseNameQuery(message).trim();
+  if (name == 'random') name = '.*';
   const search = voca.indexOf(message.content, ':') != -1 ? parseQuote(message) : null;
   const guildId = await guilds.getGuildId(message);
   if (!guildId) return null;
   if (name) {
-    const [quoteExists] = await getName(name, guildId);
-
-    if (!quoteExists) {
-      message.channel.send(`i don't know what ${name} has said`);
-    } else if (search) {
+    if (search) {
       const [quote] = await knex('quotes')
         .select('quote', 'name', 'id')
         .where('guild', guildId)
-        .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase())
+        .andWhereRaw('LOWER(name) ~ ?', name.toLowerCase())
         .andWhereRaw("LOWER(quote) LIKE '%' || ? || '%'", search.toLowerCase())
         .orderByRaw('random()')
         .limit(1);
@@ -76,6 +66,10 @@ const addQuote = async message => {
   }
 
   const name = parseNameAdd(message, 7).trim();
+  if (name == 'random') {
+    message.channel.send('try pls');
+    return null;
+  }
   const quote = parseQuote(message);
   if (name && quote) {
     if (quote.length > 500) message.channel.send('quote is too long');
@@ -145,7 +139,6 @@ const quoteCountByName = async message => {
   if (!guildId) return null;
   const name = voca.slice(message.content, 8, message.content.length);
 
-  console.log(name);
   const result = await knex('quotes')
     .count('*')
     .where('guild', guildId)

@@ -51,25 +51,25 @@ const handleMessage = async message => {
   const messageWords = voca.words(message.content.toLowerCase());
   message.content = message.content.replace(/\s+/g, ' ').trim();
   switch (messageContent[0]) {
-    case '!addrip':
+    case '!rip':
       rips.addRip(message);
       break;
     case '!delrip':
       rips.delRip(message);
       break;
-    case '!decide':
+    case '?decide':
       decide.decide(message);
       break;
-    case '!roll':
+    case '?roll':
       roll.roll(message, messageWords, generator);
       break;
-    case '!ismo':
+    case '?ismo':
       ismo.getQuote(message);
       break;
-    case '!catfact':
+    case '?catfact':
       catfacts.getCatfact(message);
       break;
-    case '!rips':
+    case '?rips':
       rips.ripCount(message);
       break;
     case '!learn':
@@ -102,10 +102,10 @@ const handleMessage = async message => {
     case '?quote':
       quotes.getQuote(message);
       break;
-    case '!quotes':
+    case '?quotes':
       quotes.quoteCount(message);
       break;
-    case '!affixes':
+    case '?affixes':
       affixes.affixes(message, ...messageWords.slice(1));
       break;
     case '?random':

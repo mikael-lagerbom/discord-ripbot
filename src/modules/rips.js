@@ -25,10 +25,10 @@ const getSpecificRip = async (rip, guild) => {
     .andWhere('guild', guild);
 };
 
-const parseRipText = message => voca.splice(message, 0, 8);
+const parseRipText = (message, index) => voca.splice(message, 0, index);
 
 const addRip = async message => {
-  const ripText = parseRipText(message.content);
+  const ripText = parseRipText(message.content, 5);
   if (ripText.length > 200) message.channel.send('rip is too long');
   else if (ripText.indexOf('@') > -1) message.channel.send("don't be an ass");
   else {
@@ -56,7 +56,7 @@ const addRip = async message => {
 };
 
 const delRip = async message => {
-  const ripText = parseRipText(message.content);
+  const ripText = parseRipText(message.content, 8);
   const guildId = await guilds.getGuildId(message);
   if (!guildId) return null;
 

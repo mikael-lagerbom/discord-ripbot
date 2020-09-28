@@ -2,14 +2,14 @@ const sendHelp = message => {
   const helpString = `
    Useable commands:
    **Rips**
-   - !addrip <rip message> adds a new rip to the database
+   - !rip <rip message> adds a new rip to the database
    - !delrip <rip message> deletes a rip if it exists
-   - !rips reacts with the amount of rips in the database
+   - ?rips reacts with the amount of rips in the database
    - rip in a message responds with a random saved rip
 
    **Utility**
-   - !decide <option, option, option...> chooses one of the options
-   - !roll <number, optional> rolls a random number between 0-100 (or given number)
+   - ?decide <option, option, option...> chooses one of the options
+   - ?roll <number, optional> rolls a random number between 0-100 (or given number)
 
    **Explanations**
    - !learn <term: explanation> saves a term and an explanation for the term
@@ -26,15 +26,18 @@ const sendHelp = message => {
    **Quotes**
    - !quote <name>: <quote> adds a new quote to the given person
    - ?quote <name, optional> fetches a random quote from the person, if given, random if not
-   - !quotes reacts with the amount of quotes in the database
+   - ?quote <name>: <search phrase> fetches a random quote from the person with the given phrase
+   - ?quote random: <search phrase> fetches a random quote from anyone with the given phrase
+   - ?quotes reacts with the amount of quotes in the database
+   - ?quotes <name> reacts with the amount of quotes from the person.
 
 
    **WoW-stuff**
-   - !affixes <region, optional> <explained, optional> gets the current affixes
+   - ?affixes <region, optional> <explained, optional> gets the current affixes
 
    **Random fun**
-   - !ismo responds with a random Ismo Laitela quote
-   - !catfact responds with a random cat fact
+   - ?ismo responds with a random Ismo Laitela quote
+   - ?catfact responds with a random cat fact
    `;
 
   message.react('✅');
