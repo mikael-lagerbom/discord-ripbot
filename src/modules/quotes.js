@@ -6,42 +6,6 @@ const helpers = require('./helpers');
 const guilds = require('./guilds');
 const users = require('./users');
 
-// '!quote '
-const parseNameQuery = message => voca.slice(message.content, 7, message.content.length);
-
-const getQuote = async message => {
-  const name = parseNameQuery(message);
-  const guildId = await guilds.getGuildId(message);
-  if (!guildId) return null;
-
-  let quoteExists = null;
-
-  if (name) {
-    [quoteExists] = await getName(name, guildId);
-
-    if (!quoteExists) {
-      message.channel.send(`i don't know what ${name} has said`);
-    } else {
-      const [quote] = await knex('quotes')
-        .pluck('quote')
-        .where('guild', guildId)
-        .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase())
-        .orderByRaw('random()')
-        .limit(1);
-      if (quote) message.channel.send(`${quote} -${name}`);
-      else message.channel.send('no quotes found');
-    }
-  } else {
-    const [quote] = await knex('quotes')
-      .select('quote', 'name')
-      .where('guild', guildId)
-      .orderByRaw('random()')
-      .limit(1);
-    if (quote) message.channel.send(`${quote.quote} -${quote.name}`);
-    else message.channel.send('no quotes found');
-  }
-};
-
 const getName = async (name, guild) => {
   return knex('quotes')
     .select('id', 'name')
@@ -50,7 +14,56 @@ const getName = async (name, guild) => {
 };
 
 // '!quote '
-const parseNameAdd = message => voca.slice(message.content, 7, voca.indexOf(message.content, ':'));
+const parseNameQuery = message =>
+  voca.slice(
+    message.content,
+    7,
+    voca.indexOf(message.content, ':') != -1 ? voca.indexOf(message.content, ':') : message.content.length
+  );
+
+const getQuote = async message => {
+  const name = parseNameQuery(message).trim();
+  const search = voca.indexOf(message.content, ':') != -1 ? parseQuote(message) : null;
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+  if (name) {
+    const [quoteExists] = await getName(name, guildId);
+
+    if (!quoteExists) {
+      message.channel.send(`i don't know what ${name} has said`);
+    } else if (search) {
+      const [quote] = await knex('quotes')
+        .select('quote', 'name', 'id')
+        .where('guild', guildId)
+        .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase())
+        .andWhereRaw("LOWER(quote) LIKE '%' || ? || '%'", search.toLowerCase())
+        .orderByRaw('random()')
+        .limit(1);
+      if (quote) message.channel.send(`${quote.quote}  -${quote.name}  #${quote.id}`);
+      else message.channel.send('no quote found');
+    } else {
+      const [quote] = await knex('quotes')
+        .select('quote', 'name', 'id')
+        .where('guild', guildId)
+        .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase())
+        .orderByRaw('random()')
+        .limit(1);
+      if (quote) message.channel.send(`${quote.quote}  -${quote.name}  #${quote.id}`);
+      else message.channel.send('no quotes found');
+    }
+  } else {
+    const [quote] = await knex('quotes')
+      .select('quote', 'name', 'id')
+      .where('guild', guildId)
+      .orderByRaw('random()')
+      .limit(1);
+    if (quote) message.channel.send(`${quote.quote}  -${quote.name}  #${quote.id}`);
+    else message.channel.send('no quotes found');
+  }
+};
+
+// '!quote '
+const parseNameAdd = (message, index) => voca.slice(message.content, index, voca.indexOf(message.content, ':'));
 
 // ': '
 const parseQuote = message =>
@@ -62,7 +75,7 @@ const addQuote = async message => {
     return null;
   }
 
-  const name = parseNameAdd(message);
+  const name = parseNameAdd(message, 7).trim();
   const quote = parseQuote(message);
   if (name && quote) {
     if (quote.length > 500) message.channel.send('quote is too long');
@@ -86,13 +99,58 @@ const addQuote = async message => {
   }
 };
 
-const quoteCount = async message => {
+// '!delquote '
+const parseDeleteId = message => voca.slice(message.content, 10, message.content.length);
+
+const delQuote = async message => {
+  const key = parseDeleteId(message);
   const guildId = await guilds.getGuildId(message);
   if (!guildId) return null;
+  if (isNaN(key)) return null;
 
+  const [keyExists] = await knex('quotes')
+    .select('id')
+    .where('id', key)
+    .andWhere('guild', guildId);
+
+  if (keyExists) {
+    await knex('quotes')
+      .del()
+      .where('id', keyExists.id);
+
+    message.react('✅');
+  } else {
+    message.channel.send(`i didn't find quote with id ${key}`);
+  }
+};
+
+const quoteCount = async message => {
+  if (message.content.length == 7) {
+    const guildId = await guilds.getGuildId(message);
+    if (!guildId) return null;
+
+    const result = await knex('quotes')
+      .count('*')
+      .where('guild', guildId);
+    const numberArray = [...(result[0].count + '')].map(n => parseInt(n));
+    for (const number of numberArray) {
+      const emoji = helpers.getKeyByValue(helpers.emojis, number);
+      await message.react(emoji);
+    }
+  } else quoteCountByName(message);
+};
+
+const quoteCountByName = async message => {
+  const guildId = await guilds.getGuildId(message);
+  if (!guildId) return null;
+  const name = voca.slice(message.content, 8, message.content.length);
+
+  console.log(name);
   const result = await knex('quotes')
     .count('*')
-    .where('guild', guildId);
+    .where('guild', guildId)
+    .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase());
+
   const numberArray = [...(result[0].count + '')].map(n => parseInt(n));
   for (const number of numberArray) {
     const emoji = helpers.getKeyByValue(helpers.emojis, number);
@@ -100,4 +158,4 @@ const quoteCount = async message => {
   }
 };
 
-module.exports = { getQuote, addQuote, quoteCount };
+module.exports = { getQuote, addQuote, delQuote, quoteCount, quoteCountByName };

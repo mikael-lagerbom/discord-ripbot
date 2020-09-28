@@ -49,6 +49,7 @@ const handleMessage = async message => {
   const messageContent = message.content.toLowerCase().split(' ');
   // Words without separators, for triggers
   const messageWords = voca.words(message.content.toLowerCase());
+  message.content = message.content.replace(/\s+/g, ' ').trim();
   switch (messageContent[0]) {
     case '!addrip':
       rips.addRip(message);
@@ -94,6 +95,9 @@ const handleMessage = async message => {
       break;
     case '!quote':
       quotes.addQuote(message);
+      break;
+    case '!delquote':
+      quotes.delQuote(message);
       break;
     case '?quote':
       quotes.getQuote(message);
