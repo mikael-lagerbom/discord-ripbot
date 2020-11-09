@@ -1,6 +1,6 @@
 const decide = message => {
   // removes the command from possible choices
-  const givenOptions = message.content.replace('!decide ', '').split(',');
+  const givenOptions = message.content.replace('?decide ', '').split(',');
 
   // removes whitespace and filters empties and falsey values out
   const fixedOptions = givenOptions.map(word => word.trim()).filter(Boolean);
