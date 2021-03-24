@@ -24,10 +24,10 @@
     "axios": "0.18.0",
     "discord.js": "11.3.0",
     "dotenv": "5.0.1",
-    "knex": "0.21.5",
+    "knex": "0.95.2",
     "mersenne-twister": "1.1.0",
     "nodemon": "1.17.1",
-    "pg": "8.3.3",
+    "pg": "8.5.1",
     "voca": "1.4.0"
   },
   "scripts": {
