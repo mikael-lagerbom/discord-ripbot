@@ -27,7 +27,7 @@
     "knex": "0.95.2",
     "mersenne-twister": "1.1.0",
     "nodemon": "1.17.1",
-    "pg": "8.5.1",
+    "pg": "7.18.2",
     "voca": "1.4.0"
   },
   "scripts": {
