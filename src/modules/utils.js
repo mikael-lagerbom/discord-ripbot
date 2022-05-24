@@ -6,6 +6,7 @@ const voca = require('voca');
 const affixes = require('./affixes');
 const catfacts = require('./catfacts');
 const decide = require('./decide');
+const answers = require('./eightball');
 const explanations = require('./explain');
 const help = require('./help');
 const ismo = require('./ismo_quotes');
@@ -110,6 +111,9 @@ const handleMessage = async message => {
       break;
     case '?random':
       explanations.getRandomExplanation(message);
+      break;
+    case '?kasipallo':
+      answers.answer(message, messageWords, generator);
       break;
     default:
       if (message.content[0] === '?' && message.content.length > 1) {
