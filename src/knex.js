@@ -1,7 +1,7 @@
 const knex = require('knex');
 
-const knexfile = require('./knexfile');
+const { devPool, prodPool } = require('./knexfile');
 
-const Knex = knex(knexfile);
+const Knex = knex(process.env.NODE_ENV === 'production' ? prodPool : devPool);
 
 module.exports = Knex;
