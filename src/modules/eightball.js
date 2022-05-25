@@ -18,7 +18,7 @@ const eightBallAnswers = [
   'Lopputulema ei näytä hyvältä.',
   'Erittäin epätodennäköisesti.',
   'Ei missään nimessä.',
-  'Turha kuvitellakaan',
+  'Turha kuvitellakaan.',
   'Ulostaako karhu metsään?',
   'Onko Jorixilla tähän sopiva kuva?'
 ];
