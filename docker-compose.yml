@@ -15,9 +15,10 @@ services:
       - ./src:/app/src
     links:
       - database
+    restart: on-failure
 
   database:
-    image: postgres:10.14-alpine
+    image: postgres:14.6-alpine
     environment:
       - POSTGRES_DB=ripbot
       - POSTGRES_USER=ripbot
