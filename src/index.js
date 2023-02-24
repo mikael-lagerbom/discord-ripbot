@@ -1,10 +1,17 @@
 require('dotenv').config();
-const Discord = require('discord.js');
+const { Client, Events, GatewayIntentBits } = require('discord.js');
 
 const knex = require('./knex');
 const utils = require('./modules/utils');
 
-const client = new Discord.Client();
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessageReactions
+  ]
+});
 
 const token = process.env.DISCORD_TOKEN;
 
@@ -21,11 +28,11 @@ const start = async () => {
 
 start();
 
-client.on('ready', () => {
-  console.log('I am ready!');
+client.once(Events.ClientReady, c => {
+  console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-client.on('message', async message => {
+client.on('messageCreate', async message => {
   if (!message.author.bot) {
     if (await utils.computerComments()) {
       const username = message.author.username;
