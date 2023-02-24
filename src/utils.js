@@ -3,28 +3,28 @@ const path = require('path');
 const MersenneTwister = require('mersenne-twister');
 const voca = require('voca');
 
-const catfacts = require('./catfacts');
-const decide = require('./decide');
-const answers = require('./eightball');
-const explanations = require('./explain');
-const help = require('./help');
-const ismo = require('./ismo_quotes');
-const quotes = require('./quotes');
-const rips = require('./rips');
-const roll = require('./roll');
+const catfacts = require('./modules/catfacts');
+const decide = require('./modules/decide');
+const answers = require('./modules/eightball');
+const explanations = require('./modules/explain');
+const help = require('./modules/help');
+const ismo = require('./modules/ismo_quotes');
+const quotes = require('./modules/quotes');
+const rips = require('./modules/rips');
+const roll = require('./commands/roll');
 
 const seed = Date.now();
 const generator = new MersenneTwister(seed);
 
 const migrateLatest = knex => {
   return knex.migrate.latest({
-    directory: path.resolve(__dirname, '../migrations')
+    directory: path.resolve(__dirname, './migrations')
   });
 };
 
 const runSeeds = knex => {
   return knex.seed.run({
-    directory: path.resolve(__dirname, '../seeds')
+    directory: path.resolve(__dirname, './seeds')
   });
 };
 

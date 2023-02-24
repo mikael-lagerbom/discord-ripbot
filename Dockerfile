@@ -13,4 +13,4 @@ COPY .env .
 
 EXPOSE 80
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "run", "dev"]

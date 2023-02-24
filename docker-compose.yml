@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: [npm, run, dev]
+    command: [yarn, run, dev]
     environment:
       - DATABASE_URL=postgres://ripbot:ripbot@database/ripbot
     ports:

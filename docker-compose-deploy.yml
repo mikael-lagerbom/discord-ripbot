@@ -1,0 +1,12 @@
+# Compose file for local dev, not for prod
+
+version: '2'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: [yarn, run, deploy-commands]
+    volumes:
+      - ./src:/app/src
+    restart: on-failure

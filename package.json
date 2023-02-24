@@ -32,7 +32,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "eslint": "eslint --ignore-path .gitignore --ext js .",
-    "dev": "nodemon --watch ./src -e js --exec node src/index.js"
+    "dev": "nodemon --watch ./src -e js --exec node src/index.js",
+    "deploy-commands": "cd ./src && node -r dotenv/config deploy-commands.js dotenv_config_path=../.env"
   },
   "lint-staged": {
     "linters": {
