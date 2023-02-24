@@ -71,7 +71,7 @@ client.on('messageCreate', async message => {
   if (!message.author.bot) {
     if (await utils.computerComments()) {
       const username = message.author.username;
-      message.channel.send(`${username} pls`);
+      message.reply(`${username} pls`);
     } else {
       utils.handleMessage(message);
     }

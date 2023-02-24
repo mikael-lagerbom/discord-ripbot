@@ -44,7 +44,7 @@ const handleMessage = async message => {
   if (isInArray(messageWords, 'rip')) {
     rips.getRip(message);
   } else if (await computerComments()) {
-    message.channel.send(`tää :D`);
+    message.reply(`tää :D`);
   }
 };
 
