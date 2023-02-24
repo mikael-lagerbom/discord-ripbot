@@ -17,6 +17,6 @@ module.exports = {
   async execute(interaction) {
     const max = interaction.options.getInteger('max') ?? 100;
     const roll = Math.floor(generator.random_incl() * Math.floor(max || 100));
-    await interaction.reply(`You rolled ${roll(max)}`);
+    await interaction.reply(`You rolled ${roll}`);
   }
 };
