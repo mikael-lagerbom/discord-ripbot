@@ -36,6 +36,10 @@ client.on('message', async message => {
   }
 });
 
+client.on('error', error => {
+  console.error('The WebSocket encountered an error:', error);
+});
+
 const login = async () => {
   for (let tries = 0; ; tries++) {
     try {
