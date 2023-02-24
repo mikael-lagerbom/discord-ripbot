@@ -1,3 +1,6 @@
+const { SlashCommandBuilder } = require('discord.js');
+const MersenneTwister = require('mersenne-twister');
+
 const eightBallAnswers = [
   'Se on varmaa.',
   'Niin on päätetty.',
@@ -23,13 +26,22 @@ const eightBallAnswers = [
   'Onko Jorixilla tähän sopiva kuva?'
 ];
 
-const answer = (message, messageWords, generator) => {
-  if (messageWords.length === 1) {
-    message.channel.send('Ole hyvä, ja esitä kysymys.');
-  } else if (messageWords.length >= 2) {
-    const randInt = Math.floor(generator.random_incl() * Math.floor(eightBallAnswers.length));
-    message.channel.send(eightBallAnswers[randInt]);
+const seed = Date.now();
+const generator = new MersenneTwister(seed);
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('eightball')
+    .setDescription('Answers the question with suitable accuracy, in Finnish.')
+    .addStringOption(option =>
+      option
+        .setName('question')
+        .setDescription('The question you want to ask from Eightball, in Finnish.')
+        .setMaxLength(256)
+        .setRequired(true)
+    ),
+  async execute(interaction) {
+    const answer = eightBallAnswers[Math.floor(generator.random_incl() * Math.floor(eightBallAnswers.length))];
+    await interaction.reply(answer);
   }
 };
-
-module.exports = { answer };
