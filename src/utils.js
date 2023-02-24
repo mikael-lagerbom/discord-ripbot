@@ -3,7 +3,6 @@ const path = require('path');
 const MersenneTwister = require('mersenne-twister');
 const voca = require('voca');
 
-const catfacts = require('./modules/catfacts');
 const decide = require('./modules/decide');
 const answers = require('./modules/eightball');
 const explanations = require('./modules/explain');
@@ -63,15 +62,6 @@ const handleMessage = async message => {
   //     break;
   //   case '?decide':
   //     decide.decide(message);
-  //     break;
-  //   case '?roll':
-  //     roll.roll(message, messageWords, generator);
-  //     break;
-  //   case '?ismo':
-  //     ismo.getQuote(message);
-  //     break;
-  //   case '?catfact':
-  //     catfacts.getCatfact(message);
   //     break;
   //   case '?rips':
   //     rips.ripCount(message);
