@@ -47,83 +47,89 @@ const computerComments = async () => {
 
 const handleMessage = async message => {
   // Words with separators, for commands
-  const messageContent = message.content.toLowerCase().split(' ');
+  // const messageContent = message.content.toLowerCase().split(' ');
   // Words without separators, for triggers
   const messageWords = voca.words(message.content.toLowerCase());
   message.content = message.content.replace(/\s+/g, ' ').trim();
-  switch (messageContent[0]) {
-    case '!rip':
-      rips.addRip(message);
-      break;
-    case '!delrip':
-      rips.delRip(message);
-      break;
-    case '?decide':
-      decide.decide(message);
-      break;
-    case '?roll':
-      roll.roll(message, messageWords, generator);
-      break;
-    case '?ismo':
-      ismo.getQuote(message);
-      break;
-    case '?catfact':
-      catfacts.getCatfact(message);
-      break;
-    case '?rips':
-      rips.ripCount(message);
-      break;
-    case '!learn':
-      explanations.addExplanation(message);
-      break;
-    case '!forget':
-      explanations.delExplanation(message);
-      break;
-    case '?explanations':
-      explanations.listExplanations(message);
-      break;
-    case '?terms':
-      explanations.listTerms(message);
-      break;
-    case '?files':
-      explanations.listImages(message);
-      break;
-    case '?links':
-      explanations.listUrls(message);
-      break;
-    case '!help':
-      help.sendHelp(message);
-      break;
-    case '!quote':
-      quotes.addQuote(message);
-      break;
-    case '!delquote':
-      quotes.delQuote(message);
-      break;
-    case '?quote':
-      quotes.getQuote(message);
-      break;
-    case '?quotes':
-      quotes.quoteCount(message);
-      break;
-    case '?affixes':
-      affixes.affixes(message, ...messageWords.slice(1));
-      break;
-    case '?random':
-      explanations.getRandomExplanation(message);
-      break;
-    case '?kasipallo':
-      answers.answer(message, messageWords, generator);
-      break;
-    default:
-      if (message.content[0] === '?' && message.content.length > 1) {
-        explanations.getExplanation(message, messageWords);
-      } else if (isInArray(messageWords, 'rip')) {
-        rips.getRip(message);
-      } else if (await computerComments()) {
-        message.channel.send(`tää :D`);
-      }
+
+  if (isInArray(messageWords, 'rip')) {
+    rips.getRip(message);
+  } else if (await computerComments()) {
+    message.channel.send(`tää :D`);
   }
+  // switch (messageContent[0]) {
+  //   case '!rip':
+  //     rips.addRip(message);
+  //     break;
+  //   case '!delrip':
+  //     rips.delRip(message);
+  //     break;
+  //   case '?decide':
+  //     decide.decide(message);
+  //     break;
+  //   case '?roll':
+  //     roll.roll(message, messageWords, generator);
+  //     break;
+  //   case '?ismo':
+  //     ismo.getQuote(message);
+  //     break;
+  //   case '?catfact':
+  //     catfacts.getCatfact(message);
+  //     break;
+  //   case '?rips':
+  //     rips.ripCount(message);
+  //     break;
+  //   case '!learn':
+  //     explanations.addExplanation(message);
+  //     break;
+  //   case '!forget':
+  //     explanations.delExplanation(message);
+  //     break;
+  //   case '?explanations':
+  //     explanations.listExplanations(message);
+  //     break;
+  //   case '?terms':
+  //     explanations.listTerms(message);
+  //     break;
+  //   case '?files':
+  //     explanations.listImages(message);
+  //     break;
+  //   case '?links':
+  //     explanations.listUrls(message);
+  //     break;
+  //   case '!help':
+  //     help.sendHelp(message);
+  //     break;
+  //   case '!quote':
+  //     quotes.addQuote(message);
+  //     break;
+  //   case '!delquote':
+  //     quotes.delQuote(message);
+  //     break;
+  //   case '?quote':
+  //     quotes.getQuote(message);
+  //     break;
+  //   case '?quotes':
+  //     quotes.quoteCount(message);
+  //     break;
+  //   case '?affixes':
+  //     affixes.affixes(message, ...messageWords.slice(1));
+  //     break;
+  //   case '?random':
+  //     explanations.getRandomExplanation(message);
+  //     break;
+  //   case '?kasipallo':
+  //     answers.answer(message, messageWords, generator);
+  //     break;
+  //   default:
+  // if (message.content[0] === '?' && message.content.length > 1) {
+  //   explanations.getExplanation(message, messageWords);
+  // } else if (isInArray(messageWords, 'rip')) {
+  //   rips.getRip(message);
+  // } else if (await computerComments()) {
+  //   message.channel.send(`tää :D`);
+  // }
+  // }
 };
 
 module.exports = { migrateLatest, runSeeds, isInArray, computerComments, handleMessage };
