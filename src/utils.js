@@ -42,7 +42,8 @@ const handleMessage = async message => {
   message.content = message.content.replace(/\s+/g, ' ').trim();
 
   if (isInArray(messageWords, 'rip')) {
-    rips.getRip(message);
+    const rip = await rips.getRip(message);
+    message.reply(`rip in ${rip}`);
   } else if (await computerComments()) {
     message.reply(`tää :D`);
   }
