@@ -1,23 +1,12 @@
-const voca = require('voca');
-
 const knex = require('../knex');
 
 const helpers = require('./helpers');
 const guilds = require('./guilds');
 const users = require('./users');
 
-// '!quote '
-const parseNameQuery = message =>
-  voca.slice(
-    message.content,
-    7,
-    voca.indexOf(message.content, ':') != -1 ? voca.indexOf(message.content, ':') : message.content.length
-  );
-
 const getQuote = async message => {
   let name = parseNameQuery(message).trim();
   if (name == 'random') name = '.*';
-  const search = voca.indexOf(message.content, ':') != -1 ? parseQuote(message) : null;
   const guildId = await guilds.getGuildId(message);
   if (!guildId) return null;
   if (name) {
@@ -52,33 +41,13 @@ const getQuote = async message => {
   }
 };
 
-// '!quote '
-const parseNameAdd = (message, index) => voca.slice(message.content, index, voca.indexOf(message.content, ':'));
-
-// ': '
-const parseQuote = message =>
-  voca.slice(message.content, voca.indexOf(message.content, ':') + 2, message.content.length);
-
-const addQuote = async message => {
-  if (voca.indexOf(message.content, ':') == -1) {
-    message.channel.send('try pls');
-    return null;
-  }
-
-  const name = parseNameAdd(message, 7).trim();
-  if (name == 'random') {
-    message.channel.send('try pls');
-    return null;
-  }
-  const quote = parseQuote(message);
+const addQuote = async (name, quote, guild, member) => {
   if (name && quote) {
-    if (quote.length > 500) message.channel.send('quote is too long');
+    if (quote.length > 512) message.channel.send('quote is too long');
     else if (name.length > 100) message.channel.send('name is too long');
     else {
-      const guildId = await guilds.getGuildId(message);
-      if (!guildId) return null;
-
-      const authorId = await users.getUserId(message.author);
+      const guildId = await guilds.getGuildId(guild);
+      const authorId = await users.getUserId(member);
 
       await knex('quotes').insert({
         quote,
@@ -86,15 +55,11 @@ const addQuote = async message => {
         user: authorId,
         guild: guildId
       });
-      message.react('✅');
     }
   } else {
-    message.channel.send('try pls');
+    throw new Error(`couldn't add ${name}: ${quote}`);
   }
 };
-
-// '!delquote '
-const parseDeleteId = message => voca.slice(message.content, 10, message.content.length);
 
 const delQuote = async message => {
   const key = parseDeleteId(message);
@@ -137,7 +102,6 @@ const quoteCount = async message => {
 const quoteCountByName = async message => {
   const guildId = await guilds.getGuildId(message);
   if (!guildId) return null;
-  const name = voca.slice(message.content, 8, message.content.length);
 
   const result = await knex('quotes')
     .count('*')
