@@ -1,14 +1,15 @@
-const fs = require('node:fs');
-
 const { REST, Routes } = require('discord.js');
 
+const { getAllFiles } = require('./utils');
+
 const commands = [];
+
 // Grab all the command files from the commands directory you created earlier
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = getAllFiles('./commands');
 
 // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
+  const command = require(`${file}`);
   commands.push(command.data.toJSON());
 }
 

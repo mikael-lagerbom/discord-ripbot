@@ -1,4 +1,5 @@
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const MersenneTwister = require('mersenne-twister');
 const voca = require('voca');
@@ -7,6 +8,21 @@ const rips = require('./modules/rips');
 
 const seed = Date.now();
 const generator = new MersenneTwister(seed);
+
+const getAllFiles = (dirPath, arrayOfFiles) => {
+  files = fs.readdirSync(dirPath);
+  arrayOfFiles = arrayOfFiles || [];
+
+  files.forEach(file => {
+    if (fs.statSync(`${dirPath}/${file}`).isDirectory()) {
+      arrayOfFiles = getAllFiles(`${dirPath}/${file}`, arrayOfFiles);
+    } else {
+      arrayOfFiles.push(path.join(__dirname, `${dirPath}/${file}`));
+    }
+  });
+
+  return arrayOfFiles.filter(file => file.endsWith('.js'));
+};
 
 const migrateLatest = knex => {
   return knex.migrate.latest({
@@ -49,4 +65,4 @@ const handleMessage = async message => {
   }
 };
 
-module.exports = { migrateLatest, runSeeds, isInArray, computerComments, handleMessage };
+module.exports = { getAllFiles, migrateLatest, runSeeds, isInArray, computerComments, handleMessage };

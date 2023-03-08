@@ -1,7 +1,4 @@
-const fs = require('node:fs');
-const path = require('node:path');
-
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 
 const knex = require('./knex');
@@ -18,12 +15,10 @@ const client = new Client({
 
 client.commands = new Collection();
 
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const commandFiles = utils.getAllFiles('./commands');
 
 for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = require(filePath);
+  const command = require(`${file}`);
   // Set a new item in the Collection with the key as the command name and the value as the exported module
   if ('data' in command && 'execute' in command) {
     client.commands.set(command.data.name, command);
@@ -34,7 +29,6 @@ for (const file of commandFiles) {
 
 client.on(Events.InteractionCreate, async interaction => {
   const command = interaction.client.commands.get(interaction.commandName);
-
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`);
     return;
