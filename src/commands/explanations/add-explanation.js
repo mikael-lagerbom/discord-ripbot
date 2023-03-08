@@ -4,7 +4,7 @@ const explanations = require('../../modules/explain');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('explain')
+    .setName('addexplain')
     .setDescription('Adds a new explanation.')
     .addSubcommand(subcommand =>
       subcommand

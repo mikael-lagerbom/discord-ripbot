@@ -1,8 +1,5 @@
 const URL = require('url').URL;
 
-const Discord = require('discord.js');
-const voca = require('voca');
-
 const knex = require('../knex');
 
 const guilds = require('./guilds');
@@ -24,16 +21,7 @@ const getKey = async (key, guild) => {
     .andWhere('guild', guild);
 };
 
-const sendExplanation = explanation => {
-  if (explanation.type === 'image') {
-    const explanationAttachment = new Discord.Attachment(explanation.explanation);
-    return { key: explanation.key, explanation: explanationAttachment };
-  } else {
-    return { key: explanation.key, explanation: explanation.explanation };
-  }
-};
-
-const getExplanation = async (key, guild) => {
+const getExplanation = async (guild, key) => {
   const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
 
@@ -46,7 +34,7 @@ const getExplanation = async (key, guild) => {
       .select('key', 'explanation', 'type')
       .where('id', keyExists.id);
 
-    return sendExplanation(explanation);
+    return { key: explanation.key, explanation: explanation.explanation };
   }
 };
 
@@ -60,7 +48,7 @@ const getRandomExplanation = async guild => {
     .orderByRaw('random()')
     .limit(1);
 
-  return sendExplanation(explanation);
+  return { key: explanation.key, explanation: explanation.explanation };
 };
 
 const addExplanation = async (key, type, explanation, guild, member) => {
