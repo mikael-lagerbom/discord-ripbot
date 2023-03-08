@@ -4,7 +4,7 @@ const explanations = require('../../modules/explain');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('unexplain')
+    .setName('delexplain')
     .setDescription('Deletes a saved explanation.')
     .addStringOption(option =>
       option
