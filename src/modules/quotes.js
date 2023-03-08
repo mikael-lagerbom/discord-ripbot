@@ -1,6 +1,5 @@
 const knex = require('../knex');
 
-const helpers = require('./helpers');
 const guilds = require('./guilds');
 const users = require('./users');
 
