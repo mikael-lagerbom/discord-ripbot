@@ -1,7 +1,7 @@
 const knex = require('knex');
 
-const { devPool } = require('./knexfile');
+const { pool } = require('./knexfile');
 
-const Knex = knex(devPool);
+const Knex = knex(pool);
 
 module.exports = Knex;
