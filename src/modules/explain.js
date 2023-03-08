@@ -102,17 +102,18 @@ const addExplanation = async (key, type, explanation, guild, member) => {
   }
 };
 
-const delExplanation = async (key, guild) => {
+const delExplanation = async (guild, key) => {
   const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
 
   const [keyExists] = await getKey(key, guildId);
 
   if (keyExists) {
-    await knex('explanations')
+    const [result] = await knex('explanations')
       .del()
       .where('id', keyExists.id)
       .returning(['key', 'explanation', 'id']);
+    return result;
   } else {
     throw new Error(`i don't know what ${key} means`);
   }
