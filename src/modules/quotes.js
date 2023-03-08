@@ -79,36 +79,27 @@ const delQuote = async (guild, id) => {
   }
 };
 
-const quoteCount = async message => {
-  if (message.content.length == 7) {
-    const guildId = await guilds.getGuildId(message);
-    if (!guildId) return null;
-
-    const result = await knex('quotes')
-      .count('*')
-      .where('guild', guildId);
-    const numberArray = [...(result[0].count + '')].map(n => parseInt(n));
-    for (const number of numberArray) {
-      const emoji = helpers.getKeyByValue(helpers.emojis, number);
-      await message.react(emoji);
-    }
-  } else quoteCountByName(message);
-};
-
-const quoteCountByName = async message => {
-  const guildId = await guilds.getGuildId(message);
+const quoteCount = async guild => {
+  const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
 
-  const result = await knex('quotes')
+  const [result] = await knex('quotes')
+    .count('*')
+    .where('guild', guildId);
+
+  return result.count;
+};
+
+const quoteCountByName = async (guild, name) => {
+  const guildId = await guilds.getGuildId(guild);
+  if (!guildId) return null;
+
+  const [result] = await knex('quotes')
     .count('*')
     .where('guild', guildId)
     .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase());
 
-  const numberArray = [...(result[0].count + '')].map(n => parseInt(n));
-  for (const number of numberArray) {
-    const emoji = helpers.getKeyByValue(helpers.emojis, number);
-    await message.react(emoji);
-  }
+  return result.count;
 };
 
 module.exports = { getQuote, addQuote, delQuote, quoteCount, quoteCountByName };
