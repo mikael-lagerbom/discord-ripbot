@@ -23,12 +23,14 @@ module.exports = {
         .setRequired(true)
     ),
   async execute(interaction) {
-    const name = interaction.options.getString('name');
-    const quote = interaction.options.getString('quote');
-
     try {
-      await quotes.addQuote(name, quote, interaction.guild, interaction.member);
-      await interaction.reply(`saved quote from \`${name}: ${quote}\``);
+      const quote = await quotes.addQuote(
+        interaction.options.getString('name'),
+        interaction.options.getString('quote'),
+        interaction.guild,
+        interaction.member
+      );
+      await interaction.reply(`saved quote from \`${quote.name}: ${quote.quote} #${quote.id}\``);
     } catch (err) {
       console.log(err);
       await interaction.reply(err.message);
