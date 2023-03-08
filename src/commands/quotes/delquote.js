@@ -18,7 +18,7 @@ module.exports = {
       await interaction.reply(`deleted quote \`${quote.name}: ${quote.quote} #${quote.id}\``);
     } catch (err) {
       console.log(err);
-      await interaction.reply(err.message);
+      await interaction.reply({ content: err.message, ephemeral: true });
     }
   }
 };

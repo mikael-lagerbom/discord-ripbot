@@ -19,7 +19,7 @@ module.exports = {
       await interaction.reply(`saved \`${result}\``);
     } catch (err) {
       console.log(err);
-      await interaction.reply(err.message);
+      await interaction.reply({ content: err.message, ephemeral: true });
     }
   }
 };

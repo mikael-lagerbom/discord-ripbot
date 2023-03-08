@@ -27,10 +27,10 @@ module.exports = {
         interaction.options.getString('name'),
         interaction.options.getString('keyword')
       );
-      await interaction.reply(`${quote.quote} -${quote.name} #${quote.id}`);
+      await interaction.reply(`${quote.quote}  -${quote.name}  #${quote.id}`);
     } catch (err) {
       console.log(err);
-      await interaction.reply(err.message);
+      await interaction.reply({ content: err.message, ephemeral: true });
     }
   }
 };
