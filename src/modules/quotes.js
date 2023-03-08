@@ -3,40 +3,27 @@ const knex = require('../knex');
 const guilds = require('./guilds');
 const users = require('./users');
 
-const getQuote = async message => {
-  let name = parseNameQuery(message).trim();
-  if (name == 'random') name = '.*';
-  const guildId = await guilds.getGuildId(message);
+const getQuote = async (guild, name, keyword) => {
+  const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
-  if (name) {
-    if (search) {
-      const [quote] = await knex('quotes')
-        .select('quote', 'name', 'id')
-        .where('guild', guildId)
-        .andWhereRaw('LOWER(name) ~ ?', name.toLowerCase())
-        .andWhereRaw("LOWER(quote) LIKE '%' || ? || '%'", search.toLowerCase())
-        .orderByRaw('random()')
-        .limit(1);
-      if (quote) message.channel.send(`${quote.quote}  -${quote.name}  #${quote.id}`);
-      else message.channel.send('no quote found');
-    } else {
-      const [quote] = await knex('quotes')
-        .select('quote', 'name', 'id')
-        .where('guild', guildId)
-        .andWhereRaw('LOWER(name) LIKE ?', name.toLowerCase())
-        .orderByRaw('random()')
-        .limit(1);
-      if (quote) message.channel.send(`${quote.quote}  -${quote.name}  #${quote.id}`);
-      else message.channel.send('no quotes found');
-    }
+
+  const [quote] = await knex('quotes')
+    .select('quote', 'name', 'id')
+    .where('guild', guildId)
+    .andWhere(builder => {
+      if (name) {
+        builder.andWhereRaw('LOWER(name) ~ ?', name.toLowerCase());
+      }
+      if (keyword) {
+        builder.andWhereRaw("LOWER(quote) LIKE '%' || ? || '%'", keyword.toLowerCase());
+      }
+    })
+    .orderByRaw('random()')
+    .limit(1);
+  if (quote) {
+    return quote;
   } else {
-    const [quote] = await knex('quotes')
-      .select('quote', 'name', 'id')
-      .where('guild', guildId)
-      .orderByRaw('random()')
-      .limit(1);
-    if (quote) message.channel.send(`${quote.quote}  -${quote.name}  #${quote.id}`);
-    else message.channel.send('no quotes found');
+    throw new Error('no quote found');
   }
 };
 

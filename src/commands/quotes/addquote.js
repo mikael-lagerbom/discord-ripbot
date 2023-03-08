@@ -4,7 +4,7 @@ const quotes = require('../../modules/quotes');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('quote')
+    .setName('addquote')
     .setDescription('Adds a new quote.')
     .addStringOption(option =>
       option
@@ -17,7 +17,7 @@ module.exports = {
     .addStringOption(option =>
       option
         .setName('quote')
-        .setDescription('The the thing the person said.')
+        .setDescription('The thing the person said.')
         .setMinLength(2)
         .setMaxLength(512)
         .setRequired(true)
