@@ -19,7 +19,7 @@ module.exports = {
       await interaction.reply(`${explanation.key}: ${explanation.explanation}`);
     } catch (err) {
       console.log(err);
-      await interaction.reply({ content: err.message, ephemeral: true });
+      await interaction.reply(err.message);
     }
   }
 };
