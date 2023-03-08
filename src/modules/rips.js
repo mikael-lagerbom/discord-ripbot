@@ -6,7 +6,7 @@ const guilds = require('./guilds');
 const users = require('./users');
 
 const getRip = async message => {
-  const guildId = await guilds.getGuildId(message);
+  const guildId = await guilds.getGuildId(message.guild);
   if (!guildId) return null;
 
   return knex('rips')
@@ -22,8 +22,6 @@ const getSpecificRip = async (rip, guild) => {
     .where('rip', rip)
     .andWhere('guild', guild);
 };
-
-const parseRipText = (message, index) => voca.splice(message, 0, index);
 
 const addRip = async (rip, guild, member) => {
   if (rip.length > 256) throw Error('rip is too long');
@@ -51,25 +49,26 @@ const addRip = async (rip, guild, member) => {
   }
 };
 
-const delRip = async message => {
-  const ripText = parseRipText(message.content, 8);
-  const guildId = await guilds.getGuildId(message);
+const delRip = async (rip, guild) => {
+  const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
 
-  const [ripExists] = await getSpecificRip(ripText, guildId);
+  const [ripExists] = await getSpecificRip(rip, guildId);
 
   if (ripExists) {
-    return knex('rips')
+    const [result] = await knex('rips')
       .del()
       .where('id', ripExists.id)
       .returning('rip');
+
+    return result.rip;
   } else {
-    throw Error("couldn't find given rip");
+    throw Error(`couldn't find \`${rip}\``);
   }
 };
 
-const ripCount = async message => {
-  const guildId = await guilds.getGuildId(message);
+const ripCount = async guild => {
+  const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
 
   return knex('rips')
