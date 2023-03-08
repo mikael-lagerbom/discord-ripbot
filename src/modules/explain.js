@@ -118,47 +118,20 @@ const delExplanation = async (key, guild) => {
   }
 };
 
-const listExplanations = async guild => {
+const listExplanations = async (guild, type) => {
   const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
+  type = type === 'all' ? null : type;
 
   const explanations = await knex('explanations')
     .pluck('key')
-    .where('type', 'text')
-    .andWhere('guild', guildId);
-  return `All types of explanations: ${explanations.join(', ')}`;
-};
-
-const listTerms = async guild => {
-  const guildId = await guilds.getGuildId(guild);
-  if (!guildId) return null;
-
-  const explanations = await knex('explanations')
-    .pluck('key')
-    .andWhere('guild', guildId);
-  return `Terms: ${explanations.join(', ')}`;
-};
-
-const listImages = async guild => {
-  const guildId = await guilds.getGuildId(guild);
-  if (!guildId) return null;
-
-  const images = await knex('explanations')
-    .pluck('key')
-    .where('type', 'image')
-    .andWhere('guild', guildId);
-  return `Files: ${images.join(', ')}`;
-};
-
-const listUrls = async guild => {
-  const guildId = await guilds.getGuildId(guild);
-  if (!guildId) return null;
-
-  const urls = await knex('explanations')
-    .pluck('key')
-    .where('type', 'url')
-    .andWhere('guild', guildId);
-  return `Links: ${urls.join(', ')}`;
+    .where('guild', guildId)
+    .andWhere(builder => {
+      if (type) {
+        builder.andWhere('type', type);
+      }
+    });
+  return `All ${type || ''} explanations: ${explanations.join(', ')}`;
 };
 
 module.exports = {
@@ -166,8 +139,5 @@ module.exports = {
   getRandomExplanation,
   addExplanation,
   delExplanation,
-  listExplanations,
-  listTerms,
-  listImages,
-  listUrls
+  listExplanations
 };
