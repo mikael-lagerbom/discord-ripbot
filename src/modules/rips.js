@@ -1,5 +1,3 @@
-const voca = require('voca');
-
 const knex = require('../knex');
 
 const guilds = require('./guilds');
@@ -71,9 +69,11 @@ const ripCount = async guild => {
   const guildId = await guilds.getGuildId(guild);
   if (!guildId) return null;
 
-  return knex('rips')
+  const [result] = await knex('rips')
     .count('*')
     .where('guild', guildId);
+
+  return result.count;
 };
 
 module.exports = { getRip, addRip, delRip, ripCount };
