@@ -1,18 +1,8 @@
-const devPool = {
+const pool = {
   client: 'pg',
-  connection: process.env.DATABASE_URL,
-  debug: false,
-  ssl: false
-};
-
-const prodPool = {
-  client: 'pg',
-  connection: process.env.DATABASE_URL + '?ssl=true',
-  debug: false,
-  ssl: { rejectUnauthorized: false }
+  connection: process.env.DATABASE_URL
 };
 
 module.exports = {
-  devPool,
-  prodPool
+  pool
 };

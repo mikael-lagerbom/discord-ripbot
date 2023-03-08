@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:12.16
+FROM node:18.14.2-alpine
 
 WORKDIR /app
 
@@ -13,4 +13,4 @@ COPY .env .
 
 EXPOSE 80
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn", "run", "dev"]

@@ -1,12 +1,10 @@
-# Compose file for local dev, not for prod
-
 version: '2'
 services:
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    command: [npm, run, dev]
+    command: [yarn, run, dev]
     environment:
       - DATABASE_URL=postgres://ripbot:ripbot@database/ripbot
     ports:

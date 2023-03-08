@@ -20,7 +20,7 @@
       "space-before-function-paren": "off"
     },
     "parserOptions": {
-      "ecmaVersion": 8,
+      "ecmaVersion": 14,
       "sourceType": "module",
       "ecmaFeatures": {
         "modules": true,
