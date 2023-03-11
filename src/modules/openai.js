@@ -17,8 +17,7 @@ const askOpenAI = async prompt => {
 
   const response = await openai.createChatCompletion({
     model,
-    messages: [starter, question],
-    max_tokens: 500
+    messages: [starter, question]
   });
   return response.data.choices[0].message.content;
 };
