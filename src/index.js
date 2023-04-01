@@ -62,9 +62,6 @@ client.once(Events.ClientReady, c => {
 
 client.on('messageCreate', async message => {
   if (!message.author.bot) {
-    if (message.guild.id === '964073090541842442') {
-      await utils.computerReview(message);
-    }
     if (await utils.computerComments()) {
       const username = message.author.username;
       message.reply(`${username} pls`);
