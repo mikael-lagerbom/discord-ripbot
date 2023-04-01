@@ -65,4 +65,13 @@ const handleMessage = async message => {
   }
 };
 
-module.exports = { getAllFiles, migrateLatest, runSeeds, isInArray, computerComments, handleMessage };
+const computerReview = async message => {
+  const roll = Math.floor(generator.random_incl() * 2);
+  if (roll === 0) {
+    message.react('➕');
+  } else if (roll === 1) {
+    message.react('➖');
+  }
+}
+
+module.exports = { getAllFiles, migrateLatest, runSeeds, isInArray, computerComments, handleMessage, computerReview };
