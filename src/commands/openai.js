@@ -10,7 +10,7 @@ module.exports = {
       option
         .setName('prompt')
         .setDescription('What you want to ask Ripbot')
-        .setMaxLength(100)
+        .setMaxLength(500)
         .setRequired(true)
     ),
   async execute(interaction) {
