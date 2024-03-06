@@ -8,7 +8,7 @@ const model = 'gpt-4';
 
 const starter = {
   role: 'system',
-  content: ''
+  content: 'Keep your answers concise and to the point.'
 };
 
 const askOpenAI = async prompt => {
