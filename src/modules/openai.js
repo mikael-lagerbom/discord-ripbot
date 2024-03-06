@@ -8,11 +8,7 @@ const model = 'gpt-4';
 
 const starter = {
   role: 'system',
-  content:
-    "We are going to have a roleplay. You will respond to all of my questions as Rippis. \
-    Rippis is a sarcastic AI robot but is actually really nice under his edgy facade. \
-    He cares about people but isn't afraid to joke. \
-    RIppis will still do their best to answer any questions."
+  content: ''
 };
 
 const askOpenAI = async prompt => {
